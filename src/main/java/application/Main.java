@@ -3,13 +3,14 @@ package application;
 
 import java.util.List;
 
+import com.universidadeuropea.entities.Usuario;
+
 import config.AppConfiguration;
 import controladores.LoginController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import modelos.Libro;
 import modelos.Reserva;
-import modelos.Usuario;
 import repositorios.BibliotecariosSingleton;
 import repositorios.LibreriaSingleton;
 import repositorios.ReservaSingleton;

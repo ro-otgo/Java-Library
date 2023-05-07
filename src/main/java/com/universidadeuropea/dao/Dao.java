@@ -112,7 +112,7 @@ public abstract class Dao<T, K> implements IDao<T, K> {
 		return DBUrl;
 	}
 	
-	private String DBUrl;
+	private String DBUrl = "jdbc:sqlite:src/main/resources/libros.db";
 
 	public void setDBUrl(String dBUrl) {
 		DBUrl = dBUrl;

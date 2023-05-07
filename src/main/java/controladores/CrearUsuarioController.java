@@ -7,6 +7,7 @@ package controladores;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import com.universidadeuropea.entities.Usuario;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,7 +29,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 
-import modelos.Usuario;
 import repositorios.UsuariosSingleton;
 
 
@@ -138,9 +138,9 @@ public class CrearUsuarioController {
     		
         	Usuario usuario = new Usuario();
         	usuario.setNombre(nombre.getText());
-        	usuario.setApellidos(apellidos.getText());
+        	usuario.setApellido1(apellidos.getText());
         	usuario.setEmail(email.getText());
-        	usuario.setPsw(rePassword.getText());
+        	usuario.setContrasena(rePassword.getText());
         	usuario.setIdUsuario(idUsuario.getText());
         	UsuariosSingleton.getRepoUsuarios().addUsuario(usuario);
         	stage.close();
@@ -149,7 +149,7 @@ public class CrearUsuarioController {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.setHeaderText("Se ha producido un error");
-			alert.setContentText("La contraseña debe tener 8 caracteres");
+			alert.setContentText("La contrasena debe tener 8 caracteres");
 			alert.showAndWait();
     	}
     	}
@@ -164,10 +164,10 @@ public class CrearUsuarioController {
     		return true;
     }
     
-    // Verifica si el id de usuario existe  ----------------a lo mejor habría que poner el metodo en usuariossingleton
+    // Verifica si el id de usuario existe  ----------------a lo mejor habrï¿½a que poner el metodo en usuariossingleton
 	private boolean validarUsuario(String username) {
     	for(Usuario i : usuarios) {
-    		if(username.equals(i.getiIdUsuario())) 
+    		if(username.equals(i.getIdUsuario())) 
     			return true;
     	}
     	return false;
@@ -181,7 +181,7 @@ public class CrearUsuarioController {
 			return false;
 	}
 	
-	// valida que la contraseña tenga 8 caractéres y se repita
+	// valida que la contraseï¿½a tenga 8 caractï¿½res y se repita
 	private boolean validarPassword (String password, String rePassword) {
 		if (password.length()==8 && password.equals(rePassword))
 			return true;

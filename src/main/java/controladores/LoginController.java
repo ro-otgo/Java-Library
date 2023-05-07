@@ -1,5 +1,11 @@
 package controladores;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
+
 /**
  * Sample Skeleton for 'app.fxml' Controller Class
  */
@@ -7,13 +13,8 @@ package controladores;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import com.universidadeuropea.entities.Usuario;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,10 +24,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-import modelos.Libro;
-import modelos.Usuario;
-import repositorios.LibreriaSingleton;
 import repositorios.SesionSingleton;
 
 public class LoginController {
@@ -75,7 +72,7 @@ public class LoginController {
 	private Map<String,String> bibliotecarios;
 	
 	private List<Usuario> usuarios;
-
+	
 
     @FXML
     void signUp(ActionEvent event) {
@@ -126,14 +123,17 @@ public class LoginController {
     
     // Valida si id usuario y contrasena coinciden con un usuario
     private Usuario validarUsuario(String username, String password) {
-    	for(Usuario usuario: usuarios) {
-    		if(usuario.getiIdUsuario().equals(username) && usuario.getPsw().equals(password))
+    	System.out.println("VALIDANDO POR BBDD");
+    	for(com.universidadeuropea.entities.Usuario usuario: usuarios) {
+    		if(username.equals(usuario.getIdUsuario()) && usuario.getContrasena().equals(password)) {
+    			System.out.println("VALIDADO POR BBDD: ENCONTRADO");
     			return usuario;
+    		}
     	}
+		System.out.println("VALIDADO POR BBDD: NO ENCONTRADO");
     	return null;
     }
     
-
 	private void mostrarVistaPantallaBibliotecario(Stage stage, String nombreBibliotecario) throws IOException{
 		BibliotecarioController.mostrarVistaPantallaBibliotecario(nombreBibliotecario);
     	stage.close();
@@ -158,4 +158,5 @@ public class LoginController {
 	public void setUsuarios(List<Usuario> loadUsers) {
 		this.usuarios = loadUsers;
 	}
+	
 }

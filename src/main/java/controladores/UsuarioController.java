@@ -4,6 +4,7 @@ package controladores;
  */
 
 import com.jfoenix.controls.JFXButton;
+import com.universidadeuropea.entities.Usuario;
 
 import controladores.reservas.ReservaListController;
 
@@ -21,7 +22,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import modelos.Usuario;
 import repositorios.BibliotecariosSingleton;
 import repositorios.SesionSingleton;
 import repositorios.UsuariosSingleton;
@@ -41,7 +41,7 @@ public class UsuarioController{
 		stage.setScene(new Scene(root));
 		stage.getIcons().add(new Image("/img/logo.jpg"));
 		stage.setTitle(NOMBRE_VISTA);
-		pantallaUsuarioController.usuarioLabel.setText(usuario.getnombre());
+		pantallaUsuarioController.usuarioLabel.setText(usuario.getNombre());
 		stage.show();
 	}
 

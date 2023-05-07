@@ -1,7 +1,5 @@
 package com.universidadeuropea.entities;
 
-import java.time.LocalDateTime;
-
 public class Usuario {
 	
     private long id;

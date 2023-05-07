@@ -7,6 +7,7 @@ package controladores;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import com.universidadeuropea.entities.Usuario;
 
 import java.io.IOException;
 import java.net.URL;
@@ -35,7 +36,6 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import modelos.Libro;
 import modelos.Reserva;
-import modelos.Usuario;
 import repositorios.LibreriaSingleton;
 import repositorios.ReservaSingleton;
 import repositorios.SesionSingleton;

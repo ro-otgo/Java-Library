@@ -4,6 +4,7 @@
 package controladores.reservas;
 
 import com.jfoenix.controls.JFXListView;
+import com.universidadeuropea.entities.Usuario;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,7 +27,6 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.Callback;
 import modelos.Reserva;
-import modelos.Usuario;
 import repositorios.ReservaSingleton;
 
 public class ReservaListController {

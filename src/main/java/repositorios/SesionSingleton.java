@@ -1,6 +1,6 @@
 package repositorios;
 
-import modelos.Usuario;
+import com.universidadeuropea.entities.Usuario;
 
 /**
  * Objeto que se utiliza para saber que usuario esta conectado en cada momento.

@@ -14,32 +14,46 @@ import java.util.Optional;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.universidadeuropea.dao.UsuarioDao;
+import com.universidadeuropea.entities.Usuario;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import modelos.Usuario;
 
 public class UsuariosSingleton {
 	
 	private static UsuariosSingleton usuariosRepo;
 	
-	private  List<Usuario> usuarios;
+	private  List<Usuario> usuarios = new ArrayList<>();
 	
 	private UsuariosSingleton() {
-		usuarios = loadUsers();
+		usuarios = loadUsersDB();
 	}
 	
-	// Devuelve la lista de usuarios guardados en archivo JSON
-	private List<Usuario> loadUsers () {
-		List<Usuario> usuarios = new ArrayList<Usuario>(); //objeto vacio donde guardar la informacion
-		try(Reader reader = new FileReader("listaUsuarios.json")){
-			Gson gson = new Gson();
-			Type tipoListaUsuarios = new TypeToken<List<Usuario>>() {}.getType();
-			usuarios = gson.fromJson(reader, tipoListaUsuarios);
-		} catch (IOException e) {
-			e.printStackTrace();
+	// Devuelve la lista de usuarios guardados en archivo DB
+		private List<Usuario> loadUsersDB() {
+			UsuarioDao usuarioDao = new UsuarioDao();
+			List<com.universidadeuropea.entities.Usuario> usuarios = new ArrayList<>();
+			try {
+				usuarios = usuarioDao.getAll();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return usuarios;
 		}
-		return usuarios;
+	
+	// Devuelve la lista de usuarios guardados en archivo JSON
+	private List<Usuario> loadUsers () throws Exception {
+		throw new Exception("Deprecated");
+//		List<Usuario> usuarios = new ArrayList<Usuario>(); //objeto vacio donde guardar la informacion
+//		try(Reader reader = new FileReader("listaUsuarios.json")){
+//			Gson gson = new Gson();
+//			Type tipoListaUsuarios = new TypeToken<List<Usuario>>() {}.getType();
+//			usuarios = gson.fromJson(reader, tipoListaUsuarios);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		return usuarios;
 	}
 	
 	// anade un nuevo usuario al listado guardado en archivo JSON
@@ -61,7 +75,7 @@ public class UsuariosSingleton {
 	}
 	
 	public Optional<Usuario> findUsuarioById(String usuarioId){
-		return usuarios.stream().filter(u->u.getiIdUsuario().equals(usuarioId)).findFirst();
+		return usuarios.stream().filter(u->u.getIdUsuario().equals(usuarioId)).findFirst();
 	}
 	
 
@@ -78,4 +92,5 @@ public class UsuariosSingleton {
 		alert.setContentText("Se ha registrado el usuario en la base de datos.");
 		alert.showAndWait();
 	}
+
 }
