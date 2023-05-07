@@ -13,12 +13,12 @@ public class ReservaDao extends Dao<Reserva, Long> implements IReservaDao {
 
 	@Override
 	protected String selectById() {
-		return "SELECT * FROM reserva WHERE id =?";
+		return "SELECT * FROM reserva WHERE id_reserva =?";
 	}
 
 	@Override
 	protected String deleteById() {
-		return "DELETE FROM reserva WHERE id =?";
+		return "DELETE FROM reserva WHERE id_reserva =?";
 	}
 	
 	@Override
@@ -29,12 +29,11 @@ public class ReservaDao extends Dao<Reserva, Long> implements IReservaDao {
 	@Override
 	protected Reserva mapear(ResultSet rs) throws SQLException {
 		Reserva reserva = new Reserva();
-		reserva.setId(rs.getLong("id"));
+		reserva.setIdReserva(rs.getLong("id_reserva"));
 		reserva.setIdLibro(rs.getLong("id_libro"));
 		reserva.setIdUsuario(rs.getLong("id_usuario"));
+		reserva.setActiva(rs.getBoolean("activa"));
 		reserva.setFechaReserva(FechaUtils.recuperarFechaYHora(rs.getString("fecha_reserva")));
-		reserva.setFechaDevolucion(FechaUtils.recuperarFechaYHora(rs.getString("fecha_devolucion")));
-		reserva.setTipoReserva(rs.getLong("tipo_reserva"));
 		return reserva;
 	}
 
@@ -48,38 +47,36 @@ public class ReservaDao extends Dao<Reserva, Long> implements IReservaDao {
 	@Override
 	public Reserva save(Reserva objeto) throws SQLException {
 		obtenerConexionDB();
-		PreparedStatement ps =getConnection().prepareStatement("INSERT INTO reserva (id_libro, id_usuario,fecha_reserva,fecha_devolucion,tipo_reserva) VALUES(?,?,?,?,?)",  Statement.RETURN_GENERATED_KEYS);
+		PreparedStatement ps =getConnection().prepareStatement("INSERT INTO reserva (id_libro, id_usuario,activa,fecha_reserva) VALUES(?,?,?,?)",  Statement.RETURN_GENERATED_KEYS);
 		ps.setLong(1, objeto.getIdLibro());
 		ps.setLong(2, objeto.getIdUsuario());
-		ps.setString(3, FechaUtils.convertirFecha(objeto.getFechaReserva()));
-		ps.setString(4, FechaUtils.convertirFecha(objeto.getFechaDevolucion()));
-		ps.setLong(5, objeto.getTipoReserva());
+		ps.setBoolean(3, objeto.getActiva());
+		ps.setString(4, FechaUtils.convertirFecha(objeto.getFechaReserva()));
 		ps.executeUpdate();
 		ResultSet rs = ps.getGeneratedKeys();
 		long pk =0; 
 		while (rs.next()) {
 			pk = rs.getLong(1);
 		}
-		objeto.setId(pk);
+		objeto.setIdReserva(pk);
 		cerrarConexion();
 		return objeto;
 	}
 
 	@Override
 	public boolean delete(Reserva objeto) throws Exception {
-		return super.deleteById(objeto.getId());
+		return super.deleteById(objeto.getIdReserva());
 	}
 
 	@Override
 	public Reserva update(Reserva objeto) throws Exception {
 		obtenerConexionDB();
-		PreparedStatement ps =getConnection().prepareStatement("UPDATE reserva SET id_libro=?, id_usuario=?,fecha_reserva=?,fecha_devolucion=?,tipo_reserva=? WHERE id=?");
+		PreparedStatement ps =getConnection().prepareStatement("UPDATE reserva SET id_libro=?, id_usuario=?, activa =?, fecha_reserva=? WHERE id_reserva=?");
 		ps.setLong(1, objeto.getIdLibro());
 		ps.setLong(2, objeto.getIdUsuario());
-		ps.setTimestamp(3, Timestamp.valueOf(objeto.getFechaReserva()));
-		ps.setTimestamp(4, Timestamp.valueOf(objeto.getFechaDevolucion()));
-		ps.setLong(5, objeto.getTipoReserva());
-		ps.setLong(6, objeto.getId());
+		ps.setBoolean(3, objeto.getActiva());
+		ps.setString(4, FechaUtils.convertirFecha(objeto.getFechaReserva()));
+		ps.setLong(5, objeto.getIdReserva());
 		ps.executeUpdate();
 		cerrarConexion();
 		return objeto;

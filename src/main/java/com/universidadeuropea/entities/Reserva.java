@@ -4,24 +4,22 @@ import java.time.LocalDateTime;
 
 public class Reserva {
 
-	private long id;
+	private long idReserva;
 	
 	private long idLibro;
 	
 	private long idUsuario;
 	
+	private boolean activa;
+	
 	private LocalDateTime fechaReserva;
-	
-	private LocalDateTime fechaDevolucion;
-	
-	private long tipoReserva;
 
-	public long getId() {
-		return id;
+	public long getIdReserva() {
+		return idReserva;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public void setIdReserva(long idReserva) {
+		this.idReserva = idReserva;
 	}
 
 	public long getIdLibro() {
@@ -40,6 +38,14 @@ public class Reserva {
 		this.idUsuario = idUsuario;
 	}
 
+	public boolean getActiva() {
+		return activa;
+	}
+
+	public void setActiva(boolean activa) {
+		this.activa = activa;
+	}
+
 	public LocalDateTime getFechaReserva() {
 		return fechaReserva;
 	}
@@ -48,26 +54,10 @@ public class Reserva {
 		this.fechaReserva = fechaReserva;
 	}
 
-	public LocalDateTime getFechaDevolucion() {
-		return fechaDevolucion;
-	}
-
-	public void setFechaDevolucion(LocalDateTime fechaDevolucion) {
-		this.fechaDevolucion = fechaDevolucion;
-	}
-
-	public long getTipoReserva() {
-		return tipoReserva;
-	}
-
-	public void setTipoReserva(long tipoReserva) {
-		this.tipoReserva = tipoReserva;
-	}
-
 	@Override
 	public String toString() {
-		return "Reserva [id=" + id + ", idLibro=" + idLibro + ", idUsuario=" + idUsuario + ", fechaReserva="
-				+ fechaReserva + ", fechaDevolucion=" + fechaDevolucion + ", tipoReserva=" + tipoReserva + "]";
+		return "Reserva [idReserva=" + idReserva + ", idLibro=" + idLibro + ", idUsuario=" + idUsuario + ", activa="
+				+ activa + ", fechaReserva=" + fechaReserva + "]";
 	}
 
 }
