@@ -29,17 +29,11 @@ public class UsuarioDao extends Dao<Usuario, Long> implements IUsuarioDao {
 	protected Usuario mapear(ResultSet rs) throws SQLException {
 		Usuario usuario = new Usuario();
 		usuario.setId(rs.getLong("id"));
-		usuario.setNombreUsuario(rs.getString("nombre_usuario"));
+		usuario.setIdUsuario(rs.getString("id_usuario"));
 		usuario.setNombre(rs.getString("nombre"));
 		usuario.setApellido1(rs.getString("apellido1"));
-		usuario.setApellido2(rs.getString("apellido2"));
-		usuario.setDni(rs.getString("dni"));
-		usuario.setFechaCreacion(FechaUtils.recuperarFechaYHora(rs.getString("fecha_creacion")));
 		usuario.setContrasena(rs.getString("contrasena"));
 		usuario.setEmail(rs.getString("email"));
-		usuario.setActivo(rs.getBoolean("activo"));
-		usuario.setTipoUsuario(rs.getInt("tipo_usuario"));
-		usuario.setTelefono(rs.getString("telefono"));
 		return usuario;
 	}
 
@@ -53,18 +47,12 @@ public class UsuarioDao extends Dao<Usuario, Long> implements IUsuarioDao {
 	@Override
 	public Usuario save(Usuario objeto) throws SQLException {
 		obtenerConexionDB();
-		PreparedStatement ps =getConnection().prepareStatement("INSERT INTO usuario (nombre_usuario,nombre,apellido1,apellido2,dni,fecha_creacion,contrasena,email,activo,tipo_usuario,telefono) VALUES(?,?,?,?,?,?,?,?,?,?,?)",  Statement.RETURN_GENERATED_KEYS);
-		ps.setString(1, objeto.getNombreUsuario());
+		PreparedStatement ps =getConnection().prepareStatement("INSERT INTO usuario (id_usuario,nombre,apellido1,contrasena,email) VALUES(?,?,?,?,?)",  Statement.RETURN_GENERATED_KEYS);
+		ps.setString(1, objeto.getIdUsuario());
 		ps.setString(2, objeto.getNombre());
 		ps.setString(3, objeto.getApellido1());
-		ps.setString(4, objeto.getApellido2());
-		ps.setString(5, objeto.getDni());
-		ps.setString(6, FechaUtils.convertirFecha(objeto.getFechaCreacion()));
-		ps.setString(7, objeto.getContrasena());
-		ps.setString(8, objeto.getEmail());
-		ps.setBoolean(9, objeto.isActivo());
-		ps.setInt(10, objeto.getTipoUsuario());
-		ps.setString(11, objeto.getTelefono());
+		ps.setString(4, objeto.getContrasena());
+		ps.setString(5, objeto.getEmail());
 		ps.executeUpdate();
 		ResultSet rs = ps.getGeneratedKeys();
 		long pk =0; 
@@ -84,19 +72,13 @@ public class UsuarioDao extends Dao<Usuario, Long> implements IUsuarioDao {
 	@Override
 	public Usuario update(Usuario objeto) throws Exception {
 		obtenerConexionDB();
-		PreparedStatement ps =getConnection().prepareStatement("UPDATE usuario SET nombre_usuario =? , nombre =? , apellido1 =? , apellido2 =? , dni =? , fecha_creacion =? , contrasena =? , email =? , activo =? , tipo_usuario =? , telefono =? WHERE id=?");
-		ps.setString(1, objeto.getNombreUsuario());
+		PreparedStatement ps =getConnection().prepareStatement("UPDATE usuario SET id_usuario =? , nombre =? , apellido1 =? , contrasena =? , email =?  WHERE id=?");
+		ps.setString(1, objeto.getIdUsuario());
 		ps.setString(2, objeto.getNombre());
 		ps.setString(3, objeto.getApellido1());
-		ps.setString(4, objeto.getApellido2());
-		ps.setString(5, objeto.getDni());
-		ps.setString(6, FechaUtils.convertirFecha(objeto.getFechaCreacion()));
-		ps.setString(7, objeto.getContrasena());
-		ps.setString(8, objeto.getEmail());
-		ps.setBoolean(9, objeto.isActivo());
-		ps.setInt(10, objeto.getTipoUsuario());
-		ps.setString(11, objeto.getTelefono());
-		ps.setLong(12, objeto.getId());
+		ps.setString(4, objeto.getContrasena());
+		ps.setString(5, objeto.getEmail());
+		ps.setLong(6, objeto.getId());
 		ps.executeUpdate();
 		cerrarConexion();
 		return objeto;
