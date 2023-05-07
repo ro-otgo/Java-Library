@@ -29,14 +29,12 @@ public class ReservaDao extends Dao<Reserva, Long> implements IReservaDao {
 	@Override
 	protected Reserva mapear(ResultSet rs) throws SQLException {
 		Reserva reserva = new Reserva();
-		while(rs.next()) {
-			reserva.setId(rs.getLong("id"));
-			reserva.setIdLibro(rs.getLong("id_libro"));
-			reserva.setIdUsuario(rs.getLong("id_usuario"));
-			reserva.setFechaReserva(FechaUtils.recuperarFechaYHora(rs.getString("fecha_reserva")));
-			reserva.setFechaDevolucion(FechaUtils.recuperarFechaYHora(rs.getString("fecha_devolucion")));
-			reserva.setTipoReserva(rs.getLong("tipo_reserva"));
-		}
+		reserva.setId(rs.getLong("id"));
+		reserva.setIdLibro(rs.getLong("id_libro"));
+		reserva.setIdUsuario(rs.getLong("id_usuario"));
+		reserva.setFechaReserva(FechaUtils.recuperarFechaYHora(rs.getString("fecha_reserva")));
+		reserva.setFechaDevolucion(FechaUtils.recuperarFechaYHora(rs.getString("fecha_devolucion")));
+		reserva.setTipoReserva(rs.getLong("tipo_reserva"));
 		return reserva;
 	}
 

@@ -29,13 +29,11 @@ public class EditorialDao extends Dao<Editorial, Long> implements IEditorialDao 
 	@Override
 	protected Editorial mapear(ResultSet rs) throws SQLException {
 		Editorial reserva = new Editorial();
-		while(rs.next()) {
-			reserva.setId(rs.getLong("id"));
-			reserva.setNombre(rs.getString("nombre"));
-			reserva.setCorreoElectronico(rs.getString("correoElectronico"));
-			reserva.setUrl(rs.getString("url"));
-			reserva.setDireccion(rs.getString("direccion"));
-		}
+		reserva.setId(rs.getLong("id"));
+		reserva.setNombre(rs.getString("nombre"));
+		reserva.setCorreoElectronico(rs.getString("correoElectronico"));
+		reserva.setUrl(rs.getString("url"));
+		reserva.setDireccion(rs.getString("direccion"));
 		return reserva;
 	}
 

@@ -28,13 +28,11 @@ public class CatalogoLibrosDao extends Dao <CatalogoLibros, Long> implements ICa
 	@Override
 	protected CatalogoLibros mapear(ResultSet rs) throws SQLException {
 		CatalogoLibros catalogoLibros = new CatalogoLibros();
-		while(rs.next()) {
-			catalogoLibros.setId(rs.getLong("id"));
-			catalogoLibros.setIsbn(rs.getString("isbn"));
-			catalogoLibros.setNombreLibro(rs.getString("nombre_libro"));
-			catalogoLibros.setFechaPublicacion(FechaUtils.recuperarFecha(rs.getString("fecha_publicacion")));
-			catalogoLibros.setFormato(rs.getInt("formato"));
-		}
+		catalogoLibros.setId(rs.getLong("id"));
+		catalogoLibros.setIsbn(rs.getString("isbn"));
+		catalogoLibros.setNombreLibro(rs.getString("nombre_libro"));
+		catalogoLibros.setFechaPublicacion(FechaUtils.recuperarFecha(rs.getString("fecha_publicacion")));
+		catalogoLibros.setFormato(rs.getInt("formato"));
 		return catalogoLibros;
 	}
 

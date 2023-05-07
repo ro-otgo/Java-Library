@@ -29,10 +29,8 @@ public class LibrosDao extends Dao <Libros, Long> implements ILibrosDao{
 	@Override
 	protected Libros mapear(ResultSet rs) throws SQLException {
 		Libros libro = new Libros();
-		while(rs.next()) {
-			libro.setId(rs.getLong("id"));
-			libro.setIdLibro(rs.getLong("id_libro"));
-		}
+		libro.setId(rs.getLong("id"));
+		libro.setIdLibro(rs.getLong("id_libro"));
 		return libro;
 	}
 

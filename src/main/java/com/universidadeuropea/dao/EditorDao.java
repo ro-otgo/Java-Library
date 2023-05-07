@@ -28,10 +28,8 @@ public class EditorDao extends Dao<Editor, Editor> implements IEditorDao {
 	@Override
 	protected Editor mapear(ResultSet rs) throws SQLException {
 		Editor editor = new Editor();
-		while(rs.next()) {
-			editor.setIdEditorial(rs.getLong("id_editorial"));
-			editor.setIdLibro(rs.getLong("id_libro"));
-		}
+		editor.setIdEditorial(rs.getLong("id_editorial"));
+		editor.setIdLibro(rs.getLong("id_libro"));
 		return editor;
 	}
 	

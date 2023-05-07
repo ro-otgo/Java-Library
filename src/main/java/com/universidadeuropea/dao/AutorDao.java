@@ -28,12 +28,10 @@ public class AutorDao extends Dao <Autor, Long> implements IAutorDao{
 	@Override
 	protected Autor mapear(ResultSet rs) throws SQLException {
 		Autor autor = new Autor();
-		while(rs.next()) {
-			autor.setId(rs.getLong("id"));
-			autor.setNombre(rs.getString("nombre"));
-			autor.setApellido1(rs.getString("apellido1"));
-			autor.setApellido2(rs.getString("apellido2"));
-		}
+		autor.setId(rs.getLong("id"));
+		autor.setNombre(rs.getString("nombre"));
+		autor.setApellido1(rs.getString("apellido1"));
+		autor.setApellido2(rs.getString("apellido2"));
 		return autor;
 	}
 

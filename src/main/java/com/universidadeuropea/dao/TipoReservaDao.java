@@ -29,12 +29,10 @@ public class TipoReservaDao extends Dao<TipoReserva, Long> implements ITipoReser
 	@Override
 	protected TipoReserva mapear(ResultSet rs) throws SQLException {
 		TipoReserva reeserva = new TipoReserva();
-		while(rs.next()) {
-			reeserva.setId(rs.getLong("id"));
-			reeserva.setTipo(rs.getString("tipo"));
-			reeserva.setPlazo(rs.getInt("plazo"));
-			reeserva.setDescripcion(rs.getString("descripcion"));
-		}
+		reeserva.setId(rs.getLong("id"));
+		reeserva.setTipo(rs.getString("tipo"));
+		reeserva.setPlazo(rs.getInt("plazo"));
+		reeserva.setDescripcion(rs.getString("descripcion"));
 		return reeserva;
 	}
 

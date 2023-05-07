@@ -28,11 +28,9 @@ public class TipoUsuarioDao extends Dao<TipoUsuario, Long> implements ITipoUsuar
 	@Override
 	protected TipoUsuario mapear(ResultSet rs) throws SQLException {
 		TipoUsuario tipoUsuario = new TipoUsuario();
-		while(rs.next()) {
-			tipoUsuario.setId(rs.getLong("id"));
-			tipoUsuario.setRol(rs.getString("rol"));
-			tipoUsuario.setDescripcion(rs.getString("descripcion"));
-		}
+		tipoUsuario.setId(rs.getLong("id"));
+		tipoUsuario.setRol(rs.getString("rol"));
+		tipoUsuario.setDescripcion(rs.getString("descripcion"));
 		return tipoUsuario;
 	}
 

@@ -28,20 +28,18 @@ public class UsuarioDao extends Dao<Usuario, Long> implements IUsuarioDao {
 	@Override
 	protected Usuario mapear(ResultSet rs) throws SQLException {
 		Usuario usuario = new Usuario();
-		while(rs.next()) {
-			usuario.setId(rs.getLong("id"));
-			usuario.setNombreUsuario(rs.getString("nombre_usuario"));
-			usuario.setNombre(rs.getString("nombre"));
-			usuario.setApellido1(rs.getString("apellido1"));
-			usuario.setApellido2(rs.getString("apellido2"));
-			usuario.setDni(rs.getString("dni"));
-			usuario.setFechaCreacion(FechaUtils.recuperarFechaYHora(rs.getString("fecha_creacion")));
-			usuario.setContrasena(rs.getString("contrasena"));
-			usuario.setEmail(rs.getString("email"));
-			usuario.setActivo(rs.getBoolean("activo"));
-			usuario.setTipoUsuario(rs.getInt("tipo_usuario"));
-			usuario.setTelefono(rs.getString("telefono"));
-		}
+		usuario.setId(rs.getLong("id"));
+		usuario.setNombreUsuario(rs.getString("nombre_usuario"));
+		usuario.setNombre(rs.getString("nombre"));
+		usuario.setApellido1(rs.getString("apellido1"));
+		usuario.setApellido2(rs.getString("apellido2"));
+		usuario.setDni(rs.getString("dni"));
+		usuario.setFechaCreacion(FechaUtils.recuperarFechaYHora(rs.getString("fecha_creacion")));
+		usuario.setContrasena(rs.getString("contrasena"));
+		usuario.setEmail(rs.getString("email"));
+		usuario.setActivo(rs.getBoolean("activo"));
+		usuario.setTipoUsuario(rs.getInt("tipo_usuario"));
+		usuario.setTelefono(rs.getString("telefono"));
 		return usuario;
 	}
 

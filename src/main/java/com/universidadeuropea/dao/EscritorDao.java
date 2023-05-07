@@ -28,10 +28,8 @@ public class EscritorDao extends Dao<Escritor, Escritor> implements IEscritorDao
 	@Override
 	protected Escritor mapear(ResultSet rs) throws SQLException {
 		Escritor escritor = new Escritor();
-		while(rs.next()) {
-			escritor.setIdAutor(rs.getLong("id_autor"));
-			escritor.setIdLibro(rs.getLong("id_libro"));
-		}
+		escritor.setIdAutor(rs.getLong("id_autor"));
+		escritor.setIdLibro(rs.getLong("id_libro"));
 		return escritor;
 	}
 	
