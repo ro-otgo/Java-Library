@@ -2,9 +2,9 @@ package com.universidadeuropea.entities;
 
 public class Usuario {
 	
-    private long id;
+    private long idUsuario;
     
-    private String idUsuario;
+    private String nombreUsuario;
     
     private String nombre;
     
@@ -14,20 +14,20 @@ public class Usuario {
     
     private String email;
 
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getIdUsuario() {
+	public long getIdUsuario() {
 		return idUsuario;
 	}
 
-	public void setIdUsuario(String idUsuario) {
+	public void setIdUsuario(long idUsuario) {
 		this.idUsuario = idUsuario;
+	}
+
+	public String getNombreUsuario() {
+		return nombreUsuario;
+	}
+
+	public void setNombreUsuario(String nombreUsuario) {
+		this.nombreUsuario = nombreUsuario;
 	}
 
 	public String getNombre() {
@@ -64,9 +64,8 @@ public class Usuario {
 
 	@Override
 	public String toString() {
-		return "Usuario [id=" + id + ", idUsuario=" + idUsuario + ", nombre=" + nombre + ", apellido1=" + apellido1
-				+ ", contrasena=" + contrasena + ", email=" + email + "]";
+		return "Usuario [idUsuario=" + idUsuario + ", nombreUsuario=" + nombreUsuario + ", nombre=" + nombre
+				+ ", apellido1=" + apellido1 + ", contrasena=" + contrasena + ", email=" + email + "]";
 	}
-
     
 }
