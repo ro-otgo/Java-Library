@@ -75,7 +75,7 @@ public class UsuarioController{
     	Stage loginStage = new Stage();
     	BibliotecariosSingleton bibliotecariosRepo = BibliotecariosSingleton.getRepoUsuarios();
     	UsuariosSingleton usuariosRepo = UsuariosSingleton.getRepoUsuarios();
-    	LoginController.mostrarLogin(loginStage, bibliotecariosRepo.getUsuarios(), usuariosRepo.getUsuarios()); 
+    	LoginController.mostrarLogin(loginStage, bibliotecariosRepo.getBibliotecarios(), usuariosRepo.getUsuarios()); 
     	SesionSingleton.getSesionSingleton().actualizarUsuario(null);
     	stage.close();
     }

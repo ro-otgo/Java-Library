@@ -7,6 +7,7 @@ package controladores;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import com.universidadeuropea.entities.Bibliotecario;
 import com.universidadeuropea.entities.Usuario;
 
 import java.io.IOException;
@@ -38,7 +39,7 @@ public class CrearUsuarioController {
 	
 	private Stage stage;
 	
-	public static void mostrarVistaCrearUsuario(Scene scene, List<Usuario> loadusuarios , Map<String,String> loadbibliotecarios) throws IOException{
+	public static void mostrarVistaCrearUsuario(Scene scene, List<Usuario> loadusuarios , List<Bibliotecario> loadbibliotecarios) throws IOException{
 		FXMLLoader loader = new FXMLLoader(CrearUsuarioController.class.getResource("/vistas/CrearUsuario.fxml"));
 		CrearUsuarioController nuevoUsuarioController = new CrearUsuarioController();
 		loader.setController(nuevoUsuarioController);
@@ -91,8 +92,8 @@ public class CrearUsuarioController {
     private JFXButton cancelarButton; // Value injected by FXMLLoader
     
     private List<Usuario> usuarios;
-
-    private Map<String, String> bibliotecarios;
+    
+    private List<Bibliotecario> bibliotecarios;
     
     @FXML
     void cancelar(ActionEvent event) {
@@ -125,7 +126,7 @@ public class CrearUsuarioController {
 			alert.showAndWait();
     	}
     	
-    	else if(validarUsuario(idUsuario.getText()) || validarBibliotecario(idUsuario.getText()))
+    	else if(validarUsuario(idUsuario.getText()) || validarBibliotecarioDB(idUsuario.getText()))
     	{
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error");
@@ -174,11 +175,23 @@ public class CrearUsuarioController {
     }
 	
 	// Verifica si el id del usuario existe como bibliotecarios;
-	private boolean validarBibliotecario (String username) {
+	private boolean validarBibliotecario (String username) throws Exception {
+		throw new Exception("Deprecated");
+		/*
 		if(bibliotecarios.containsKey(idUsuario.getText()))
 			return true;
 		else
 			return false;
+		*/
+	}
+	
+	// Verifica si el id del usuario existe como bibliotecarios en la base de datos;
+	private boolean validarBibliotecarioDB (String username) {
+		for(com.universidadeuropea.entities.Bibliotecario bibliotecario: bibliotecarios) {
+    		if(username.equals(bibliotecario.getNombreBibliotecario()))
+    			return true;
+		}
+		return false;
 	}
 	
 	// valida que la contrase�a tenga 8 caract�res y se repita
@@ -193,7 +206,13 @@ public class CrearUsuarioController {
 		this.usuarios = loadUsers;
 	}
 	
+	/*obsoleto por paso de JSON a DB
 	public void setBibliotecarios(Map<String, String> loadbibliotecarios) {
+		this.bibliotecarios = loadbibliotecarios;
+	}
+	*/
+	
+	public void setBibliotecarios(List<Bibliotecario> loadbibliotecarios) {
 		this.bibliotecarios = loadbibliotecarios;
 	}
 	

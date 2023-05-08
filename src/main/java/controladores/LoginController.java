@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import com.universidadeuropea.entities.Bibliotecario;
 import com.universidadeuropea.entities.Usuario;
 
 import javafx.event.ActionEvent;
@@ -28,11 +29,11 @@ import repositorios.SesionSingleton;
 
 public class LoginController {
 	
-	public static void mostrarLogin(Stage primaryStage, Map<String,String> bibliotecarios, List<Usuario> usuarios) throws IOException {
+	public static void mostrarLogin(Stage primaryStage, List<Bibliotecario> list, List<Usuario> usuarios) throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(LoginController.class.getResource("/vistas/LoginView.fxml"));
 		LoginController mainController = new LoginController();
 		fxmlLoader.setController(mainController);
-		mainController.setBibliotecarios(bibliotecarios);
+		mainController.setBibliotecarios(list);
 		mainController.setUsuarios(usuarios);
 
 		Parent root = fxmlLoader.load();
@@ -68,8 +69,8 @@ public class LoginController {
 	
     @FXML // fx:id="signUpButton"
     private JFXButton signUpButton; // Value injected by FXMLLoader
-    
-	private Map<String,String> bibliotecarios;
+	
+	private List<Bibliotecario> bibliotecarios;
 	
 	private List<Usuario> usuarios;
 	
@@ -94,7 +95,7 @@ public class LoginController {
     	if(username.getText().isEmpty() || password.getText().isEmpty()) 
             wrongLogIn.setText("Porfavor introduce tus datos.");
     	// Acceso como bibliotecario:
-    	else if(validarBibliotecario(username.getText(),password.getText())) {
+    	else if(validarBibliotecarioDB(username.getText(),password.getText())) {
     		wrongLogIn.setText("Acceso bibliotecario!");
             mostrarVistaPantallaBibliotecario(stage,username.getText().toString());
     	}
@@ -113,11 +114,27 @@ public class LoginController {
             
           	
     // Valida si id usuario y contrasena coinciden con un bibliotecario
-    private boolean validarBibliotecario(String username, String password) {
-    	String usuarioPwd = bibliotecarios.getOrDefault(username,null);
+    private boolean validarBibliotecario(String username, String password) throws Exception {
+    	throw new Exception("Deprecated");
+    	/*
+    	String usuarioPwd = bibliotecarios.getContrasena();
     	if (usuarioPwd!=null) {
     		return usuarioPwd.equals(password);
     	}
+    	return false;
+    	*/
+    }
+    
+    // Valida si id usuario y contrasena coinciden con un bibliotecario de la DB
+    private boolean validarBibliotecarioDB(String username, String password) {
+    	System.out.println("VALIDANDO POR BBDD");
+    	for(com.universidadeuropea.entities.Bibliotecario bibliotecario: bibliotecarios) {
+    		if(username.equals(bibliotecario.getNombreBibliotecario()) && bibliotecario.getContrasena().equals(password)) {
+    			System.out.println("VALIDADO POR BBDD: ENCONTRADO");;
+    			return true;
+    		}
+    	}
+		System.out.println("VALIDADO POR BBDD: NO ENCONTRADO");
     	return false;
     }
     
@@ -151,7 +168,7 @@ public class LoginController {
 
 	}
 	
-	public void setBibliotecarios(Map<String, String> loadbibliotecarios) {
+	public void setBibliotecarios(List<Bibliotecario> loadbibliotecarios) {
 		this.bibliotecarios = loadbibliotecarios;
 	}
 	

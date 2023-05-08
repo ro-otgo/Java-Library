@@ -4,6 +4,7 @@ package application;
 import java.util.List;
 
 import com.universidadeuropea.entities.Usuario;
+import com.universidadeuropea.entities.Bibliotecario;
 
 import config.AppConfiguration;
 import controladores.LoginController;
@@ -33,7 +34,9 @@ public class Main extends Application {
 		configuration.setLastReserva(Reserva.getGeneratedID());
 		configuration.setLastLibro(Libro.getGeneratedId());
 		configuration.almacenarAjustes();
+		/* obsoleto, actualmente no se pueden modificar los bibliotecarios desde la app
 		BibliotecariosSingleton.getRepoUsuarios().escribirUsuarios();
+		*/
 		LibreriaSingleton.getLibreria().escribirLibros();
 		ReservaSingleton.getReservaSingleton().escribirReservas();
 		UsuariosSingleton.getRepoUsuarios().escribirUsuarios();
@@ -55,7 +58,7 @@ public class Main extends Application {
 			UsuariosSingleton repoUsuarios = UsuariosSingleton.getRepoUsuarios();
 			List<Usuario> usuarios = repoUsuarios.getUsuarios();
 			cargarAjustes();
-			LoginController.mostrarLogin(primaryStage, repoBibliotecarios.getUsuarios(), usuarios);
+			LoginController.mostrarLogin(primaryStage, repoBibliotecarios.getBibliotecarios(), usuarios);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
