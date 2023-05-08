@@ -141,7 +141,7 @@ public class CrearUsuarioController {
         	usuario.setApellido1(apellidos.getText());
         	usuario.setEmail(email.getText());
         	usuario.setContrasena(rePassword.getText());
-        	usuario.setIdUsuario(idUsuario.getText());
+        	usuario.setNombreUsuario(idUsuario.getText());
         	UsuariosSingleton.getRepoUsuarios().addUsuario(usuario);
         	stage.close();
     	}
@@ -167,7 +167,7 @@ public class CrearUsuarioController {
     // Verifica si el id de usuario existe  ----------------a lo mejor habr�a que poner el metodo en usuariossingleton
 	private boolean validarUsuario(String username) {
     	for(Usuario i : usuarios) {
-    		if(username.equals(i.getIdUsuario())) 
+    		if(username.equals(i.getNombreUsuario())) 
     			return true;
     	}
     	return false;

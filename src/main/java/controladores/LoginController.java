@@ -125,7 +125,7 @@ public class LoginController {
     private Usuario validarUsuario(String username, String password) {
     	System.out.println("VALIDANDO POR BBDD");
     	for(com.universidadeuropea.entities.Usuario usuario: usuarios) {
-    		if(username.equals(usuario.getIdUsuario()) && usuario.getContrasena().equals(password)) {
+    		if(username.equals(usuario.getNombreUsuario()) && usuario.getContrasena().equals(password)) {
     			System.out.println("VALIDADO POR BBDD: ENCONTRADO");
     			return usuario;
     		}

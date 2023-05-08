@@ -75,7 +75,7 @@ public class UsuariosSingleton {
 	}
 	
 	public Optional<Usuario> findUsuarioById(String usuarioId){
-		return usuarios.stream().filter(u->u.getIdUsuario().equals(usuarioId)).findFirst();
+		return usuarios.stream().filter(u->u.getNombreUsuario().equals(usuarioId)).findFirst();
 	}
 	
 

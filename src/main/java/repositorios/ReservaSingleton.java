@@ -82,7 +82,7 @@ public class ReservaSingleton {
 	}
 
 	public void crearReserva(Libro libro, Usuario usuario) {
-		Reserva reserva = new Reserva(usuario.getIdUsuario(), libro.getId(),appConfiguracion.getTiempoReserva());
+		Reserva reserva = new Reserva(usuario.getNombreUsuario(), libro.getId(),appConfiguracion.getTiempoReserva());
 		reservas.add(reserva);
 		escribirReservas();
 		libro.setReservado(true);
@@ -101,7 +101,7 @@ public class ReservaSingleton {
 	}
 	
 	public boolean usuarioTieneReservaActivaLibro(Usuario usuario, Libro libro) {
-		List<Reserva> reservasLibrosUsuario = reservas.stream().filter(r->usuario.getIdUsuario().equals(r.getIdUsuario()) && libro.getId() == r.getIdLibro()).collect(Collectors.toList());
+		List<Reserva> reservasLibrosUsuario = reservas.stream().filter(r->usuario.getNombreUsuario().equals(r.getIdUsuario()) && libro.getId() == r.getIdLibro()).collect(Collectors.toList());
 		for (Reserva reserva: reservasLibrosUsuario) {
 			if (reserva.isActive()) {
 				return true;
@@ -142,7 +142,7 @@ public class ReservaSingleton {
 	 * @return
 	 */
 	public List<Reserva> buscarReservaActivaPorUsuario(Usuario usuario) {
-		return reservas.stream().filter(r -> usuario.getIdUsuario().equals(r.getIdUsuario()) && r.isActive()).collect(Collectors.toList());
+		return reservas.stream().filter(r -> usuario.getNombreUsuario().equals(r.getIdUsuario()) && r.isActive()).collect(Collectors.toList());
 	}
 	
 	/**
@@ -151,7 +151,7 @@ public class ReservaSingleton {
 	 * @return
 	 */
 	public List<Reserva> buscarReservaPorUsuario(Usuario usuario) {
-		return reservas.stream().filter(r -> usuario.getIdUsuario().equals(r.getIdUsuario())).collect(Collectors.toList());
+		return reservas.stream().filter(r -> usuario.getNombreUsuario().equals(r.getIdUsuario())).collect(Collectors.toList());
 	}
 	
 	/**
@@ -162,7 +162,7 @@ public class ReservaSingleton {
 	 * @return
 	 */
 	public Optional<Reserva> buscarReservaActivaPorUsuarioLibro(Usuario usuario, Libro libro) {
-		return reservas.stream().filter(r -> usuario.getIdUsuario().equals(r.getIdUsuario()) && r.isActive() && libro.getId() == r.getIdLibro()).findFirst();
+		return reservas.stream().filter(r -> usuario.getNombreUsuario().equals(r.getIdUsuario()) && r.isActive() && libro.getId() == r.getIdLibro()).findFirst();
 	}
 	
 	public boolean libroReservado(Libro libro) {
