@@ -142,7 +142,7 @@ public class CrearUsuarioController {
         	usuario.setEmail(email.getText());
         	usuario.setContrasena(rePassword.getText());
         	usuario.setNombreUsuario(idUsuario.getText());
-        	UsuariosSingleton.getRepoUsuarios().addUsuario(usuario);
+        	UsuariosSingleton.getRepoUsuarios().addUsuarioBD(usuario,usuarios);
         	stage.close();
     	}
     	else {

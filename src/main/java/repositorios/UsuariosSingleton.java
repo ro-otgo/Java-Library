@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Type;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -83,7 +84,10 @@ public class UsuariosSingleton {
 		return usuarios;
 	}
 	
-	public void addUsuario(Usuario nuevoUsuario) {
+	// obsoleto, añadia nuevo usuario al JSON
+	public void addUsuario(Usuario nuevoUsuario) throws Exception {
+		throw new Exception("Deprecated");
+		/*
 		usuarios.add(nuevoUsuario);
 		escribirUsuarios();
     	Alert alert = new Alert(AlertType.INFORMATION);
@@ -91,6 +95,23 @@ public class UsuariosSingleton {
 		alert.setHeaderText("Crear usuario");
 		alert.setContentText("Se ha registrado el usuario en la base de datos.");
 		alert.showAndWait();
+		*/
 	}
 
+	// añade un nuevo usuario en la base de datos
+	public void addUsuarioBD (Usuario nuevoUsuario, List<Usuario> usuarios) {
+		UsuarioDao usuarioDao = new UsuarioDao();
+		try {
+			usuarios.add(usuarioDao.save(nuevoUsuario));
+	    	Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Informacion");
+			alert.setHeaderText("Crear usuario");
+			alert.setContentText("Se ha registrado el usuario en la base de datos.");
+			alert.showAndWait();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 }
