@@ -85,7 +85,6 @@ public class ReservaSingleton {
 	public void crearReserva(Libros libro, Usuario usuario) {
 		Reserva reserva = new Reserva(usuario.getNombreUsuario(), libro.getIdLibro(),appConfiguracion.getTiempoReserva());
 		reservas.add(reserva);
-		escribirReservas();
 		libro.setReservado(true);
 		LibreriaSingleton.actualizarLibroDB(libro);
 	}
@@ -99,7 +98,6 @@ public class ReservaSingleton {
 				break;
 			}
 		}
-		escribirReservas();
 	}
 	
 	public boolean usuarioTieneReservaActivaLibro(Usuario usuario, Libros libro) {
@@ -171,13 +169,4 @@ public class ReservaSingleton {
 		return reservas.stream().anyMatch(r->libro.getIdLibro()==r.getIdLibro() && r.isActive());
 	}
 
-	public void escribirReservas() {
-		// guardamos en el Json la lista actualizada
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		try (FileWriter writer = new FileWriter("reservas.json")) {
-			gson.toJson(reservas, writer);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 }

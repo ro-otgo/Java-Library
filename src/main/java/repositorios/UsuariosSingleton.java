@@ -57,17 +57,6 @@ public class UsuariosSingleton {
 //		return usuarios;
 	}
 	
-	// anade un nuevo usuario al listado guardado en archivo JSON
-	public void escribirUsuarios () {
-		Gson gson = new GsonBuilder().setPrettyPrinting().create(); 
-		try(FileWriter writer = new FileWriter("listaUsuarios.json")){
-			gson.toJson(usuarios, writer);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	
 	public static UsuariosSingleton getRepoUsuarios() {
 		if (usuariosRepo==null) {
 			usuariosRepo = new UsuariosSingleton();
@@ -84,7 +73,7 @@ public class UsuariosSingleton {
 		return usuarios;
 	}
 	
-	// obsoleto, añadia nuevo usuario al JSON
+	// obsoleto, aï¿½adia nuevo usuario al JSON
 	public void addUsuario(Usuario nuevoUsuario) throws Exception {
 		throw new Exception("Deprecated");
 		/*
@@ -98,7 +87,7 @@ public class UsuariosSingleton {
 		*/
 	}
 
-	// añade un nuevo usuario en la base de datos
+	// aï¿½ade un nuevo usuario en la base de datos
 	public void addUsuarioBD (Usuario nuevoUsuario, List<Usuario> usuarios) {
 		UsuarioDao usuarioDao = new UsuarioDao();
 		try {
