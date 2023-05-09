@@ -16,12 +16,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Window;
-import modelos.Libro;
+import com.universidadeuropea.entities.Libros;
 import repositorios.SesionSingleton;
 
-public class LibroListaCell extends ListCell<Libro>{
+public class LibroListaCell extends ListCell<Libros>{
 	
-	private Libro libro;
+	private Libros libro;
 	private Window ventanaBibliotecarioWindow;
 	
     public LibroListaCell(Window main) {
@@ -91,7 +91,7 @@ public class LibroListaCell extends ListCell<Libro>{
     }
 
 	@Override
-	protected void updateItem(Libro item, boolean empty) {
+	protected void updateItem(Libros item, boolean empty) {
 		super.updateItem(item, empty);
 		if(empty || item == null) {
 			System.out.println(">Contenido vacio");

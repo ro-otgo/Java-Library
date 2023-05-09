@@ -30,7 +30,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import modelos.Libro;
+import com.universidadeuropea.entities.Libros;
 import modelos.Reserva;
 import repositorios.LibreriaSingleton;
 import repositorios.ReservaSingleton;
@@ -147,7 +147,7 @@ public class ReservaDetalleController {
 	private boolean validarReserva() {
 		boolean reservaValida = true;
 //		Optional<Libro> optLibro = LibreriaSingleton.getLibreria().buscarLibroPorId(reserva.getIdLibro());
-		Optional<Libro> optLibro = LibreriaSingleton.getLibreria().buscarLibroPorId(Long.parseLong(idLibro.getText()));
+		Optional<Libros> optLibro = LibreriaSingleton.getLibreria().buscarLibroPorId(Long.parseLong(idLibro.getText()));
 		if (!optLibro.isPresent()) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error");
@@ -166,7 +166,7 @@ public class ReservaDetalleController {
 				// Recuperar libro
 				// Buscar la reserva activa del libro
 				if (optLibro.isPresent()) {
-					Libro libro = optLibro.get();
+					Libros libro = optLibro.get();
 					List<Reserva> reservasLibro = ReservaSingleton.getReservaSingleton()
 							.buscarReservaActivaPorLibro(libro);
 					if (!reservasLibro.isEmpty()) {

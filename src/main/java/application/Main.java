@@ -5,12 +5,12 @@ import java.util.List;
 
 import com.universidadeuropea.entities.Usuario;
 import com.universidadeuropea.entities.Bibliotecario;
+import com.universidadeuropea.entities.Libros;
 
 import config.AppConfiguration;
 import controladores.LoginController;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import modelos.Libro;
 import modelos.Reserva;
 import repositorios.BibliotecariosSingleton;
 import repositorios.LibreriaSingleton;
@@ -32,12 +32,16 @@ public class Main extends Application {
 		System.out.println("Almacenar archivos de configuracion de la aplicacion");
 		AppConfiguration configuration = AppConfiguration.getConfiguration();
 		configuration.setLastReserva(Reserva.getGeneratedID());
-		configuration.setLastLibro(Libro.getGeneratedId());
+		/* obsoleto con el paso de JSON a DB
+		configuration.setLastLibro(Libros.getGeneratedId());
+		*/
 		configuration.almacenarAjustes();
 		/* obsoleto, actualmente no se pueden modificar los bibliotecarios desde la app
 		BibliotecariosSingleton.getRepoUsuarios().escribirUsuarios();
 		*/
-		LibreriaSingleton.getLibreria().escribirLibros();
+		/*obsoleto por el paso de JSON a DB
+		LibreriaSingleton.getLibreria().escribirLibrosDB();
+		*/
 		ReservaSingleton.getReservaSingleton().escribirReservas();
 		UsuariosSingleton.getRepoUsuarios().escribirUsuarios();
 		System.out.println("-----------------------------------------------------");
@@ -46,7 +50,9 @@ public class Main extends Application {
 	private void cargarAjustes() {
 		System.out.println("Se estan cargando los ajustes de la aplicacion.");
 		AppConfiguration configuration = AppConfiguration.getConfiguration();
+		/* obsoleto con el paso de JSON a DB
 		Libro.setGeneratedId(configuration.getLastLibro());
+		*/
 		Reserva.setGeneratedID(configuration.getLastReserva());
 		System.out.println("Se han cargado los ajustes.");
 	}

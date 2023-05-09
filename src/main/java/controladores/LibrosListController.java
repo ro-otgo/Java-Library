@@ -30,7 +30,8 @@ import javafx.util.Callback;
 
 import java.util.List;
 
-import modelos.Libro;
+
+import com.universidadeuropea.entities.Libros;
 import repositorios.LibreriaSingleton;
 
 /**
@@ -69,15 +70,15 @@ public class LibrosListController {
 	public static final String NOMBRE_VENTANA = "Listado Libros";
 	
 	
-	public LibrosListController(List<Libro> libros) {
+	public LibrosListController(List<Libros> libros) {
 		this.libros = libros;
 		items = FXCollections.observableArrayList();
         items.addAll(this.libros);
 	}
 	
-	private ObservableList<Libro> items;
+	private ObservableList<Libros> items;
 
-	private List<Libro> libros;
+	private List<Libros> libros;
 
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
@@ -86,7 +87,7 @@ public class LibrosListController {
     private URL location;
 
     @FXML // fx:id="listaView"
-    private JFXListView<Libro> listaView; // Value injected by FXMLLoader
+    private JFXListView<Libros> listaView; // Value injected by FXMLLoader
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
@@ -95,9 +96,9 @@ public class LibrosListController {
 //        https://docs.oracle.com/javafx/2/ui_controls/list-view.htm
 //        https://stackoverflow.com/a/13270833/8873596
 //        https://www.turais.de/how-to-custom-listview-cell-in-javafx/
-        listaView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Libro>() {
+        listaView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Libros>() {
 			@Override
-			public void changed(ObservableValue<? extends Libro> observable, Libro oldValue, Libro newValue) {
+			public void changed(ObservableValue<? extends Libros> observable, Libros oldValue, Libros newValue) {
 				System.out.println("Clicked-Old: " + oldValue);
 				System.out.println("Clicked-New: " + newValue);
 				System.out.println("Clicked-Observable: " + observable);
@@ -119,10 +120,10 @@ public class LibrosListController {
         		});
         listaView.setItems(items);
         listaView.setExpanded(true);
-        listaView.setCellFactory(new Callback<ListView<Libro>, ListCell<Libro>> (){
+        listaView.setCellFactory(new Callback<ListView<Libros>, ListCell<Libros>> (){
 
 			@Override
-			public ListCell<Libro> call(ListView<Libro> param) {
+			public ListCell<Libros> call(ListView<Libros> param) {
 				return new LibroListaCell(bibliotecarioWindow);
 			}
         	

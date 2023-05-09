@@ -8,6 +8,7 @@ package controladores;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.universidadeuropea.entities.Usuario;
+import com.universidadeuropea.entities.Libros;
 
 import java.io.IOException;
 import java.net.URL;
@@ -34,7 +35,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import modelos.Libro;
 import modelos.Reserva;
 import repositorios.LibreriaSingleton;
 import repositorios.ReservaSingleton;
@@ -51,7 +51,7 @@ public class DetalleLibroBibliotecarioController {
 	 * Mostrar vista detalles del libro seleccionado
 	 * @throws IOException
 	 */
-	public static void mostrarVistaDetallesLibroBibliotecario(Libro libro, Scene listadoLibrosScene, Window ventanaBibliotecarioWindow) throws IOException {
+	public static void mostrarVistaDetallesLibroBibliotecario(Libros libro, Scene listadoLibrosScene, Window ventanaBibliotecarioWindow) throws IOException {
 		// Mostrar vista ver detalles libro
 		String vistaPath = "/vistas/DetalleLibroBibliotecario.fxml";
 		FXMLLoader loaderDetallesLibro = new FXMLLoader(DetalleLibroBibliotecarioController.class.getResource(vistaPath));
@@ -86,7 +86,7 @@ public class DetalleLibroBibliotecarioController {
 	private static final String TEXT_RESERVADO = "Reservado";
 	private static final String TEXT_DISPONIBLE = "Disponible";
 	
-	private Libro libro;
+	private Libros libro;
 
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
@@ -145,7 +145,7 @@ public class DetalleLibroBibliotecarioController {
     @FXML
     void borrarButton(ActionEvent event) {
 		Node source = (Node) event.getSource();
-    	if(libro.isReservado()) {
+    	if(libro.getReservado()) {
     		Alert alert = new Alert(AlertType.ERROR);
     		alert.setTitle("Error");
     		alert.setHeaderText("Se ha producido un error");
@@ -181,8 +181,9 @@ public class DetalleLibroBibliotecarioController {
     void modificar(ActionEvent event) {
     	if(comprobarCampos()) {
     		libro.setAutor(autorLabel1.getText());
-    		libro.setIsbn(ISBNLabel1.getText());
+    		libro.setIsbn(Long.parseLong(ISBNLabel1.getText()));
     		libro.setTitulo(tituloLabel1.getText());
+    		LibreriaSingleton.actualizarLibroDB(libro);
     		Alert alert = new Alert(AlertType.INFORMATION);
     		alert.setTitle("Informacion");
     		alert.setHeaderText("Actualizacion libro");
@@ -221,7 +222,7 @@ public class DetalleLibroBibliotecarioController {
     		return;
     	}
     	// Comprobar si el libro esta reservado
-    	boolean reservado = libro.isReservado();
+    	boolean reservado = libro.getReservado();
     	if (!reservado) {
     		// Crear la reserva
         	ReservaSingleton.getReservaSingleton().crearReserva(libro, usuario);
@@ -315,11 +316,11 @@ public class DetalleLibroBibliotecarioController {
 	}
 
 	private void populateVistaBibliotecario() {
-		idLabel1.setText(String.valueOf(libro.getId()));
+		idLabel1.setText(String.valueOf(libro.getIdLibro()));
 		tituloLabel1.setText(libro.getTitulo());
 		autorLabel1.setText(libro.getAutor());
-		ISBNLabel1.setText(libro.getIsbn());
-		if (libro.isReservado()) {
+		ISBNLabel1.setText(String.valueOf(libro.getIsbn()));
+		if (libro.getReservado()) {
 			List<Reserva> reservaList = ReservaSingleton.getReservaSingleton().buscarReservaActivaPorLibro(libro);
 			Reserva reserva = reservaList.get(0);
 			reservadoLabel1.setText("" + reserva.getId());
@@ -329,11 +330,11 @@ public class DetalleLibroBibliotecarioController {
 	}
 
 	private void populateVistaUsuario() {
-		idLabel.setText(String.valueOf(libro.getId()));
+		idLabel.setText(String.valueOf(libro.getIdLibro()));
 		tituloLabel.setText(libro.getTitulo());
 		autorLabel.setText(libro.getAutor());
-		ISBNLabel.setText(libro.getIsbn());
-		if (libro.isReservado()) {
+		ISBNLabel.setText(String.valueOf(libro.getIsbn()));
+		if (libro.getReservado()) {
 			List<Reserva> reservaList = ReservaSingleton.getReservaSingleton().buscarReservaActivaPorLibro(libro);
 			Reserva reserva = reservaList.get(0);
 			reservadoLabel.setText(reserva.getIdUsuario());
@@ -342,11 +343,11 @@ public class DetalleLibroBibliotecarioController {
 		}
 	}
 
-	public Libro getLibro() {
+	public Libros getLibro() {
 		return libro;
 	}
 
-	public void setLibro(Libro libro) {
+	public void setLibro(Libros libro) {
 		this.libro = libro;
 	}
 	

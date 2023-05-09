@@ -25,7 +25,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import modelos.Libro;
+import com.universidadeuropea.entities.Libros;
 import repositorios.LibreriaSingleton;
 
 public class CrearLibroController {
@@ -94,12 +94,13 @@ public class CrearLibroController {
     void crearLibro(ActionEvent event) {
     	if(comprobarFormulario()) {
     		LibreriaSingleton libreria = LibreriaSingleton.getLibreria();
-    		Libro.LibroBuilder builder = new Libro.LibroBuilder();
-    		builder.setAutor(autorInput.getText());
-    		builder.setTitulo(tituloInput.getText());
-    		builder.setIsbn(isbnInput.getText());
-    		Libro libro = builder.build();
-    		libreria.addLibro(libro);			
+    		Libros nuevoLibro = new Libros();
+    		nuevoLibro.setAutor(autorInput.getText());
+    		nuevoLibro.setTitulo(tituloInput.getText());
+    		nuevoLibro.setIsbn(Long.parseLong(isbnInput.getText()));
+    		nuevoLibro.setBorrado(false);
+    		nuevoLibro.setReservado(false);
+    		libreria.addLibro(nuevoLibro);
     		stage.close();
     	}
     	else {

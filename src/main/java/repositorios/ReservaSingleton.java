@@ -14,10 +14,11 @@ import java.util.stream.Collectors;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+
+import com.universidadeuropea.entities.Libros;
 import com.universidadeuropea.entities.Usuario;
 
 import config.AppConfiguration;
-import modelos.Libro;
 import modelos.Reserva;
 
 /**
@@ -81,11 +82,12 @@ public class ReservaSingleton {
 		this.reservas = reservas;
 	}
 
-	public void crearReserva(Libro libro, Usuario usuario) {
-		Reserva reserva = new Reserva(usuario.getNombreUsuario(), libro.getId(),appConfiguracion.getTiempoReserva());
+	public void crearReserva(Libros libro, Usuario usuario) {
+		Reserva reserva = new Reserva(usuario.getNombreUsuario(), libro.getIdLibro(),appConfiguracion.getTiempoReserva());
 		reservas.add(reserva);
 		escribirReservas();
 		libro.setReservado(true);
+		LibreriaSingleton.actualizarLibroDB(libro);
 	}
 
 	public void eliminarReserva(Long idReserva) {
@@ -100,8 +102,8 @@ public class ReservaSingleton {
 		escribirReservas();
 	}
 	
-	public boolean usuarioTieneReservaActivaLibro(Usuario usuario, Libro libro) {
-		List<Reserva> reservasLibrosUsuario = reservas.stream().filter(r->usuario.getNombreUsuario().equals(r.getIdUsuario()) && libro.getId() == r.getIdLibro()).collect(Collectors.toList());
+	public boolean usuarioTieneReservaActivaLibro(Usuario usuario, Libros libro) {
+		List<Reserva> reservasLibrosUsuario = reservas.stream().filter(r->usuario.getNombreUsuario().equals(r.getIdUsuario()) && libro.getIdLibro() == r.getIdLibro()).collect(Collectors.toList());
 		for (Reserva reserva: reservasLibrosUsuario) {
 			if (reserva.isActive()) {
 				return true;
@@ -123,8 +125,8 @@ public class ReservaSingleton {
 	 * @param libro
 	 * @return
 	 */
-	public List<Reserva> buscarReservaActivaPorLibro(Libro libro) {
-		return reservas.stream().filter(r -> libro.getId() == r.getIdLibro() && r.isActive()).collect(Collectors.toList());
+	public List<Reserva> buscarReservaActivaPorLibro(Libros libro) {
+		return reservas.stream().filter(r -> libro.getIdLibro() == r.getIdLibro() && r.isActive()).collect(Collectors.toList());
 	}
 	
 	/**
@@ -132,8 +134,8 @@ public class ReservaSingleton {
 	 * @param libro
 	 * @return
 	 */
-	public List<Reserva> buscarReservaPorLibro(Libro libro) {
-		return reservas.stream().filter(r -> libro.getId() == r.getIdLibro()).collect(Collectors.toList());
+	public List<Reserva> buscarReservaPorLibro(Libros libro) {
+		return reservas.stream().filter(r -> libro.getIdLibro() == r.getIdLibro()).collect(Collectors.toList());
 	}
 	
 	/**
@@ -161,12 +163,12 @@ public class ReservaSingleton {
 	 * @param libro
 	 * @return
 	 */
-	public Optional<Reserva> buscarReservaActivaPorUsuarioLibro(Usuario usuario, Libro libro) {
-		return reservas.stream().filter(r -> usuario.getNombreUsuario().equals(r.getIdUsuario()) && r.isActive() && libro.getId() == r.getIdLibro()).findFirst();
+	public Optional<Reserva> buscarReservaActivaPorUsuarioLibro(Usuario usuario, Libros libro) {
+		return reservas.stream().filter(r -> usuario.getNombreUsuario().equals(r.getIdUsuario()) && r.isActive() && libro.getIdLibro() == r.getIdLibro()).findFirst();
 	}
 	
-	public boolean libroReservado(Libro libro) {
-		return reservas.stream().anyMatch(r->libro.getId()==r.getIdLibro() && r.isActive());
+	public boolean libroReservado(Libros libro) {
+		return reservas.stream().anyMatch(r->libro.getIdLibro()==r.getIdLibro() && r.isActive());
 	}
 
 	public void escribirReservas() {
