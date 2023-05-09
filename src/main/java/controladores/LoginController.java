@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import com.universidadeuropea.dao.BibliotecarioDao;
 import com.universidadeuropea.entities.Bibliotecario;
 import com.universidadeuropea.entities.Usuario;
 
@@ -25,6 +26,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import repositorios.BibliotecariosSingleton;
 import repositorios.SesionSingleton;
 
 public class LoginController {
@@ -98,6 +100,7 @@ public class LoginController {
     	else if(validarBibliotecarioDB(username.getText(),password.getText())) {
     		wrongLogIn.setText("Acceso bibliotecario!");
             mostrarVistaPantallaBibliotecario(stage,username.getText().toString());
+            return;
     	}
     	//Acceso como usuario:
     	Usuario user = validarUsuario(username.getText(),password.getText());
@@ -105,6 +108,7 @@ public class LoginController {
     		wrongLogIn.setText("Acceso usuario!");
     		SesionSingleton.getSesionSingleton().actualizarUsuario(user);
     		mostrarVistaPantallaUsuario(stage, user);
+            return;
     	}
     	else {
         	// Datos incorrectos:
@@ -127,15 +131,8 @@ public class LoginController {
     
     // Valida si id usuario y contrasena coinciden con un bibliotecario de la DB
     private boolean validarBibliotecarioDB(String username, String password) {
-    	System.out.println("VALIDANDO POR BBDD");
-    	for(com.universidadeuropea.entities.Bibliotecario bibliotecario: bibliotecarios) {
-    		if(username.equals(bibliotecario.getNombreBibliotecario()) && bibliotecario.getContrasena().equals(password)) {
-    			System.out.println("VALIDADO POR BBDD: ENCONTRADO");;
-    			return true;
-    		}
-    	}
-		System.out.println("VALIDADO POR BBDD: NO ENCONTRADO");
-    	return false;
+    	System.out.println("VALIDANDO POR BBDD-Update");
+    	return BibliotecariosSingleton.validarBibliotecario(username,password);
     }
     
     // Valida si id usuario y contrasena coinciden con un usuario

@@ -9,6 +9,28 @@ import com.universidadeuropea.entities.Bibliotecario;
 import com.universidadeuropea.idao.IBibliotecarioDao;
 
 public class BibliotecarioDao extends Dao<Bibliotecario, Long> implements IBibliotecarioDao {
+	
+	public boolean validarUsuario(String username,String password) {
+		obtenerConexionDB();
+		PreparedStatement ps;
+		boolean result = false;
+		try {
+			ps = getConnection()
+					.prepareStatement("SELECT * from bibliotecario where nombre_bibliotecario=? AND contrasena =?");
+
+			ps.setString(1, username);
+			ps.setString(2, password);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				rs.getInt("id_bibliotecario");
+				result = true;
+			}
+		} catch (SQLException e) {
+			errorHandler(e);
+		}
+		cerrarConexion();
+		return result;
+	}
 
 	@Override
 	protected String selectById() {

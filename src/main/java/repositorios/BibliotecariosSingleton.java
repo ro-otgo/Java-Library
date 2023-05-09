@@ -23,6 +23,11 @@ public class BibliotecariosSingleton {
 	
 	private List<Bibliotecario> bibliotecarios = new ArrayList();
 	
+	public static boolean validarBibliotecario (String username,String password) {
+		BibliotecarioDao bibliotecarioDao = new BibliotecarioDao();
+		return bibliotecarioDao.validarUsuario(username,password);
+	}
+	
 	private BibliotecariosSingleton() {
 		bibliotecarios = loadUsersDB();
 	}
