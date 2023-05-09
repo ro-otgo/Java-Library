@@ -34,6 +34,7 @@ public class LibrosDao extends Dao <Libros, Long> implements ILibrosDao{
 		libro.setIsbn(rs.getLong("isbn"));
 		libro.setAutor(rs.getString("autor"));
 		libro.setBorrado(rs.getBoolean("borrado"));
+		libro.setReservado(rs.getBoolean("reservado"));
 		return libro;
 	}
 
@@ -47,11 +48,12 @@ public class LibrosDao extends Dao <Libros, Long> implements ILibrosDao{
 	@Override
 	public Libros save(Libros objeto) throws SQLException {
 		obtenerConexionDB();
-		PreparedStatement ps =getConnection().prepareStatement("INSERT INTO libros (titulo,isbn,autor,borrado) VALUES(?,?,?,?)",  Statement.RETURN_GENERATED_KEYS);
+		PreparedStatement ps =getConnection().prepareStatement("INSERT INTO libros (titulo,isbn,autor,borrado,reservado) VALUES(?,?,?,?,?)",  Statement.RETURN_GENERATED_KEYS);
 		ps.setString(1, objeto.getTitulo());
 		ps.setLong(2, objeto.getIsbn());
 		ps.setString(3, objeto.getAutor());
 		ps.setBoolean(4, objeto.getBorrado());
+		ps.setBoolean(5, objeto.getReservado());
 		ps.executeUpdate();
 		ResultSet rs = ps.getGeneratedKeys();
 		long pk =0; 
@@ -71,12 +73,13 @@ public class LibrosDao extends Dao <Libros, Long> implements ILibrosDao{
 	@Override
 	public Libros update(Libros objeto) throws Exception {
 		obtenerConexionDB();
-		PreparedStatement ps =getConnection().prepareStatement("UPDATE libros SET titulo =? , isbn =? , autor =? , borrado =? WHERE id_libro=?");
+		PreparedStatement ps =getConnection().prepareStatement("UPDATE libros SET titulo =? , isbn =? , autor =? , borrado =?, reservado=? WHERE id_libro=?");
 		ps.setString(1, objeto.getTitulo());
 		ps.setLong(2, objeto.getIsbn());
 		ps.setString(3, objeto.getAutor());
 		ps.setBoolean(4, objeto.getBorrado());
-		ps.setLong(5, objeto.getIdLibro());
+		ps.setBoolean(5, objeto.getReservado());
+		ps.setLong(6, objeto.getIdLibro());
 		ps.executeUpdate();
 		cerrarConexion();
 		return objeto;

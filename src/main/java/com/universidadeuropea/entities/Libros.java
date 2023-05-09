@@ -11,6 +11,8 @@ public class Libros {
 	private String autor;
 	
 	private boolean borrado;
+	
+	private boolean reservado;
 
 	public long getIdLibro() {
 		return idLibro;
@@ -52,10 +54,18 @@ public class Libros {
 		this.borrado = borrado;
 	}
 
+	public boolean getReservado() {
+		return reservado;
+	}
+
+	public void setReservado(boolean reservado) {
+		this.reservado = reservado;
+	}
+
 	@Override
 	public String toString() {
 		return "Libros [idLibro=" + idLibro + ", titulo=" + titulo + ", isbn=" + isbn + ", autor=" + autor
-				+ ", borrado=" + borrado + "]";
+				+ ", borrado=" + borrado + ", reservado=" + reservado + "]";
 	}
 
 	
