@@ -84,4 +84,19 @@ public class LibrosDao extends Dao <Libros, Long> implements ILibrosDao{
 		cerrarConexion();
 		return objeto;
 	}
+	
+	// metodo que actualiza el atributo reservado de un libro a false
+	public void devolverLibro(Long id) {
+		obtenerConexionDB();
+		PreparedStatement ps;;
+		try {
+			ps = getConnection().prepareStatement("UPDATE Libros SET reservado = 0 WHERE id_libro = ?");
+			ps.setLong(1, id);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			errorHandler(e);
+		}
+		cerrarConexion();
+
+	}
 }

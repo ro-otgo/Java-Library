@@ -150,5 +150,10 @@ public class LibreriaSingleton {
 		}
 	}
 	
+	public static void devolverLibroDB(Long id) {
+		LibrosDao librosDao = new LibrosDao ();
+		librosDao.devolverLibro(id);
+	}
+	
 
 }

@@ -227,6 +227,8 @@ public class ReservaDetalleController {
 		reserva.setFechaInicioReserva(fechaInicioReserva.getValue());
 		reserva.setIdLibro(Long.parseLong(idLibro.getText()));
 		reserva.setIdUsuario(idUsuario.getText());
+		if(!reserva.isActive())
+			LibreriaSingleton.devolverLibroDB(Long.parseLong(idLibro.getText()));
 	}
 
 	@FXML

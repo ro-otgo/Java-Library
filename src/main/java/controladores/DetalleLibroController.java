@@ -27,6 +27,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import modelos.Reserva;
+import repositorios.LibreriaSingleton;
 import repositorios.ReservaSingleton;
 import repositorios.SesionSingleton;
 
@@ -147,6 +148,7 @@ public class DetalleLibroController {
     			// El usuario actual esta devolviendo el libro.
     			Reserva reserva = reservaOpt.get();
     			reserva.setActive(false);
+    			LibreriaSingleton.devolverLibroDB(libro.getIdLibro());
         		Alert alert = new Alert(AlertType.INFORMATION);
         		alert.setTitle("Informacion");
         		alert.setHeaderText("Actualizacion reserva");
