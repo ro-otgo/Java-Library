@@ -12,6 +12,20 @@ public class Reserva {
 	
 	private boolean activa;
 	
+	
+	
+	public Reserva() {
+		super();
+	}
+
+	public Reserva(long idLibro, long idUsuario, boolean activa, LocalDateTime fechaReserva) {
+		super();
+		this.idLibro = idLibro;
+		this.idUsuario = idUsuario;
+		this.activa = activa;
+		this.fechaReserva = fechaReserva;
+	}
+
 	private LocalDateTime fechaReserva;
 
 	public long getIdReserva() {

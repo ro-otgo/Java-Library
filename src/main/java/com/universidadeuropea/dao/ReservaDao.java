@@ -5,8 +5,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
+import com.universidadeuropea.entities.Libros;
 import com.universidadeuropea.entities.Reserva;
+import com.universidadeuropea.entities.Usuario;
 import com.universidadeuropea.idao.IReservaDao;
 
 public class ReservaDao extends Dao<Reserva, Long> implements IReservaDao {
@@ -81,6 +86,100 @@ public class ReservaDao extends Dao<Reserva, Long> implements IReservaDao {
 		cerrarConexion();
 		return objeto;
 	}
+	
+	public Optional<Reserva> buscarReservaActivaPorUsuarioLibro(Usuario usuario, Libros libro) throws Exception {
+		obtenerConexionDB();
+		Reserva reserva  = null;
+		
+		PreparedStatement ps  =getConnection().prepareStatement("SELECT * FROM reserva where id_usuario=? and id_libro=? and activa=1");
+		ps.setLong(1, usuario.getIdUsuario());
+		ps.setLong(2, libro.getIdLibro());
+		ResultSet rs = ps.executeQuery();
+		while(rs.next()) {
+			reserva = mapear(rs);
+			// Solo deberia existir una
+			break;
+		}
+		cerrarConexion();
+		Optional<Reserva> optional = Optional.ofNullable(reserva);
+		return optional;
+	}
+	
+	public List<Reserva> buscarReservasUsuario(Usuario usuario) throws Exception {
+		obtenerConexionDB();
+		List<Reserva> reservas = new ArrayList<>();
+		PreparedStatement ps  =getConnection().prepareStatement("SELECT * FROM reserva where id_usuario=?");
+		ps.setLong(1, usuario.getIdUsuario());
+		ResultSet rs = ps.executeQuery();
+		while(rs.next()) {
+			Reserva reserva = mapear(rs);
+			reservas.add(reserva);
+		}
+		cerrarConexion();
+		return reservas;
+	}
+	
+	public List<Reserva> buscarReservasUsuarioActiva(Usuario usuario) throws Exception {
+		obtenerConexionDB();
+		List<Reserva> reservas = new ArrayList<>();
+		PreparedStatement ps  =getConnection().prepareStatement("SELECT * FROM reserva where id_usuario=? and activa=1");
+		ps.setLong(1, usuario.getIdUsuario());
+		ResultSet rs = ps.executeQuery();
+		while(rs.next()) {
+			Reserva reserva = mapear(rs);
+			reservas.add(reserva);
+		}
+		cerrarConexion();
+		return reservas;
+	}
+	
+	public List<Reserva> buscarReservaPorLibro(Libros libro) throws Exception {
+		obtenerConexionDB();
+		List<Reserva> reservas = new ArrayList<>();
+		PreparedStatement ps  =getConnection().prepareStatement("SELECT * FROM reserva where id_libro=?");
+		ps.setLong(1, libro.getIdLibro());
+		ResultSet rs = ps.executeQuery();
+		while(rs.next()) {
+			Reserva reserva = mapear(rs);
+			reservas.add(reserva);
+			break;
+		}
+		cerrarConexion();
+		return reservas;
+	}
+	
+	
+	public List<Reserva> buscarReservaActivaPorLibro(Libros libro) throws Exception {
+		obtenerConexionDB();
+		List<Reserva> reservas = new ArrayList<>();
+		PreparedStatement ps  =getConnection().prepareStatement("SELECT * FROM reserva where id_libro=? and activa=1");
+		ps.setLong(1, libro.getIdLibro());
+		ResultSet rs = ps.executeQuery();
+		while(rs.next()) {
+			Reserva reserva = mapear(rs);
+			reservas.add(reserva);
+			break;
+		}
+		cerrarConexion();
+		return reservas;
+	}
+	
+	public List<Reserva> buscarReservasActiva() throws Exception {
+		obtenerConexionDB();
+		List<Reserva> reservas = new ArrayList<>();
+		PreparedStatement ps  =getConnection().prepareStatement("SELECT * FROM reserva where activa=1");
+		ResultSet rs = ps.executeQuery();
+		while(rs.next()) {
+			Reserva reserva = mapear(rs);
+			reservas.add(reserva);
+			break;
+		}
+		cerrarConexion();
+		return reservas;
+	}
+	
+
+	
 	
 	
 }

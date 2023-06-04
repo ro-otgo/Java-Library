@@ -13,7 +13,7 @@ import com.universidadeuropea.idao.IDao;
 
 public abstract class Dao<T, K> implements IDao<T, K> {
 
-
+	
 	/**
 	 * Metodo que permite mapear un result set a un objeto Java
 	 * 
@@ -129,10 +129,12 @@ public abstract class Dao<T, K> implements IDao<T, K> {
 	}
 
 	protected void cerrarConexion() {
+		System.out.println("Cerrando conexion base de datos ...");
 		if (connection != null) {
 			try {
 				if (!connection.isClosed()) {
 					connection.close();
+					System.out.println("Cerrado conexion base de datos.");
 				}
 			} catch (SQLException e) {
 				errorHandler(e);
@@ -152,7 +154,7 @@ public abstract class Dao<T, K> implements IDao<T, K> {
 	 */
 
 	private Connection connection;
-
+	
 	protected Connection getConnection() {
 		return connection;
 	}

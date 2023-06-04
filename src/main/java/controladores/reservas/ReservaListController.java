@@ -4,6 +4,7 @@
 package controladores.reservas;
 
 import com.jfoenix.controls.JFXListView;
+import com.universidadeuropea.entities.Reserva;
 import com.universidadeuropea.entities.Usuario;
 
 import java.io.IOException;
@@ -26,7 +27,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.Callback;
-import modelos.Reserva;
 import repositorios.ReservaSingleton;
 
 public class ReservaListController {
@@ -47,8 +47,14 @@ public class ReservaListController {
 
 	public static void mostrarListaReservas(Scene menuPrincipalScene) throws IOException {
 		// Mostrar vista lista reserva
-		List<Reserva> reservasList = ReservaSingleton.getReservaSingleton().getReservas();
-		mostrarVista(menuPrincipalScene, reservasList);
+		List<Reserva> reservasList;
+		try {
+			reservasList = ReservaSingleton.getReservaSingleton().getReservas();
+			mostrarVista(menuPrincipalScene, reservasList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private static void mostrarVista(Scene scene, List<Reserva> reservasList) throws IOException {

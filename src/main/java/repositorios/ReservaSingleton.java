@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Type;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -14,15 +16,17 @@ import java.util.stream.Collectors;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
+import com.universidadeuropea.dao.LibrosDao;
+import com.universidadeuropea.dao.ReservaDao;
 import com.universidadeuropea.entities.Libros;
+import com.universidadeuropea.entities.Reserva;
 import com.universidadeuropea.entities.Usuario;
 
 import config.AppConfiguration;
-import modelos.Reserva;
 
 /**
  * Repositorio para almacenar las reservas.
+ * 
  * @author Rodrigo
  *
  */
@@ -31,33 +35,30 @@ public class ReservaSingleton {
 	// Unica instancia disponible
 	private static ReservaSingleton reservaSingleton;
 
-	// Listado de reservas
-	private List<Reserva> reservas;
-	
 	private AppConfiguration appConfiguracion;
 
 	/**
 	 * Constructor privado para que no pueda ser instanciado por ninguna otra clase.
 	 */
 	private ReservaSingleton() {
-		reservas = cargarReservas();
-		appConfiguracion = AppConfiguration.getConfiguration();
+		try {
+			appConfiguracion = AppConfiguration.getConfiguration();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
+	
+
 
 	/**
 	 * Metodo para cargar las reservas.
+	 * 
 	 * @return
+	 * @throws Exception
 	 */
-	private List<Reserva> cargarReservas() {
-		List<Reserva> reservas = new ArrayList(); // objeto vacio donde guardar la informaci�n
-		try (Reader reader = new FileReader("reservas.json")) {
-			Gson gson = new Gson();
-			Type tipoReservas = new TypeToken<List<Reserva>>() {
-			}.getType();
-			reservas = gson.fromJson(reader, tipoReservas);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	private List<Reserva> cargarReservas() throws Exception {
+		ReservaDao reservaDao = new ReservaDao();
+		List<Reserva> reservas = reservaDao.getAll();
 		return reservas;
 	}
 
@@ -74,99 +75,161 @@ public class ReservaSingleton {
 		return reservaSingleton;
 	}
 
-	public List<Reserva> getReservas() {
-		return reservas;
-	}
-
-	public void setReservas(List<Reserva> reservas) {
-		this.reservas = reservas;
-	}
-
+	
 	public void crearReserva(Libros libro, Usuario usuario) {
-		Reserva reserva = new Reserva(usuario.getNombreUsuario(), libro.getIdLibro(),appConfiguracion.getTiempoReserva());
-		reservas.add(reserva);
-		libro.setReservado(true);
-		LibreriaSingleton.actualizarLibroDB(libro);
+		Reserva reserva = new Reserva(libro.getIdLibro(),usuario.getIdUsuario(), true, LocalDateTime.now());
+		ReservaDao reservaDao = new ReservaDao();
+		try {
+			reservaDao.save(reserva);
+			libro.setReservado(true);
+			LibreriaSingleton.actualizarLibroDB(libro);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public void eliminarReserva(Long idReserva) {
-		ListIterator<Reserva> listIterator = reservas.listIterator();
-		while(listIterator.hasNext()) {
-			Reserva reserva = listIterator.next();
-			if(reserva.getId() == idReserva) {
-				listIterator.remove();
-				break;
-			}
+		ReservaDao daoReserva = new ReservaDao();
+		try {
+			daoReserva.deleteById(idReserva);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
-	
+
 	public boolean usuarioTieneReservaActivaLibro(Usuario usuario, Libros libro) {
-		List<Reserva> reservasLibrosUsuario = reservas.stream().filter(r->usuario.getNombreUsuario().equals(r.getIdUsuario()) && libro.getIdLibro() == r.getIdLibro()).collect(Collectors.toList());
-		for (Reserva reserva: reservasLibrosUsuario) {
-			if (reserva.isActive()) {
-				return true;
-			}
+		Optional<Reserva> reserva = buscarReservaActivaPorUsuarioLibro(usuario,libro);
+		if(reserva.isPresent()) {
+			return true;
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Obtener reservas activas
+	 * 
 	 * @return
 	 */
-	public List<Reserva> getReservasActivas(){
-		return reservas.stream().filter(Reserva::isActive).collect(Collectors.toList());
+	public List<Reserva> getReservasActivas() {
+		ReservaDao reservaDao = new ReservaDao();
+		List<Reserva> reservas = new ArrayList<>();
+		try {
+			reservas.addAll(reservaDao.buscarReservasActiva());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return reservas;
 	}
-	
+
 	/**
 	 * Obtener reserva activa por libro, deberia existir solamente una.
+	 * 
 	 * @param libro
 	 * @return
 	 */
 	public List<Reserva> buscarReservaActivaPorLibro(Libros libro) {
-		return reservas.stream().filter(r -> libro.getIdLibro() == r.getIdLibro() && r.isActive()).collect(Collectors.toList());
+		ReservaDao reservaDao = new ReservaDao();
+		List<Reserva> reservas = new ArrayList<>();
+		try {
+			reservas.addAll(reservaDao.buscarReservaActivaPorLibro(libro));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return reservas;
 	}
-	
+
 	/**
 	 * Buscar reservas asociadas a un libro.
+	 * 
 	 * @param libro
 	 * @return
 	 */
 	public List<Reserva> buscarReservaPorLibro(Libros libro) {
-		return reservas.stream().filter(r -> libro.getIdLibro() == r.getIdLibro()).collect(Collectors.toList());
+		ReservaDao reservaDao = new ReservaDao();
+		List<Reserva> reservas = new ArrayList<>();
+		try {
+			reservas.addAll(reservaDao.buscarReservaPorLibro(libro));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return reservas;
 	}
-	
+
 	/**
 	 * Buscar reservas activas de un usuario
+	 * 
 	 * @param usuario
 	 * @return
 	 */
 	public List<Reserva> buscarReservaActivaPorUsuario(Usuario usuario) {
-		return reservas.stream().filter(r -> usuario.getNombreUsuario().equals(r.getIdUsuario()) && r.isActive()).collect(Collectors.toList());
+		ReservaDao reservaDao = new ReservaDao();
+		List<Reserva> reservas = new ArrayList<>();
+		try {
+			reservas.addAll(reservaDao.buscarReservasUsuarioActiva(usuario));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return reservas;
 	}
-	
+
 	/**
 	 * Buscar todas las reservas de un usuario
+	 * 
 	 * @param usuario
 	 * @return
 	 */
 	public List<Reserva> buscarReservaPorUsuario(Usuario usuario) {
-		return reservas.stream().filter(r -> usuario.getNombreUsuario().equals(r.getIdUsuario())).collect(Collectors.toList());
+		ReservaDao reservaDao = new ReservaDao();
+		List<Reserva> reservas = new ArrayList<>();
+		try {
+			reservas.addAll(reservaDao.buscarReservasUsuario(usuario));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return reservas;
 	}
-	
+
 	/**
-	 * Buscar la reserva activa de un usuario y de un libro.
-	 * Trata de averiguar si un usuario y un libro estan asociados mediatne una reserva activa.
+	 * Buscar la reserva activa de un usuario y de un libro. Trata de averiguar si
+	 * un usuario y un libro estan asociados mediatne una reserva activa.
+	 * 
 	 * @param usuario
 	 * @param libro
 	 * @return
 	 */
 	public Optional<Reserva> buscarReservaActivaPorUsuarioLibro(Usuario usuario, Libros libro) {
-		return reservas.stream().filter(r -> usuario.getNombreUsuario().equals(r.getIdUsuario()) && r.isActive() && libro.getIdLibro() == r.getIdLibro()).findFirst();
+		ReservaDao reservaDao = new ReservaDao();
+		try {
+			return reservaDao.buscarReservaActivaPorUsuarioLibro(usuario,libro);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public boolean libroReservado(Libros libro) {
+		// TODO
+		LibrosDao libroDao = new LibrosDao();
+		try {
+			return libroDao.estaReservado(libro);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
 	}
 	
-	public boolean libroReservado(Libros libro) {
-		return reservas.stream().anyMatch(r->libro.getIdLibro()==r.getIdLibro() && r.isActive());
+	public List<Reserva> getReservas() throws Exception {
+		ReservaDao reservaDao = new ReservaDao();
+		List<Reserva> reservas = reservaDao.getAll();
+		return reservas;
 	}
 
 }

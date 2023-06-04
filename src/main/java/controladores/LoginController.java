@@ -133,7 +133,7 @@ public class LoginController {
     // Valida si id usuario y contrasena coinciden con un bibliotecario de la DB
     private boolean validarBibliotecarioDB(String username, String password) {
     	System.out.println("VALIDANDO POR BBDD-Update");
-    	return BibliotecariosSingleton.validarBibliotecario(username,password);
+    	return BibliotecariosSingleton.getRepoUsuarios().validarBibliotecario(username, password);
     }
     
     // Valida si id usuario y contrasena coinciden con un usuario

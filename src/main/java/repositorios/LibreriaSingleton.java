@@ -150,6 +150,16 @@ public class LibreriaSingleton {
 		}
 	}
 	
+	public static void actualizarEstadoLibro (Libros libro) {
+		LibrosDao librosDao = new LibrosDao();
+		try {
+			librosDao.actualizarEstadoLibro(libro);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public static void devolverLibroDB(Long id) {
 		LibrosDao librosDao = new LibrosDao ();
 		librosDao.devolverLibro(id);
