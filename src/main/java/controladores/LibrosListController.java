@@ -3,11 +3,13 @@
  */
 package controladores;
 
-import com.jfoenix.controls.JFXListView;
-
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+
+import com.jfoenix.controls.JFXListView;
+import com.universidadeuropea.entities.Libros;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -27,11 +29,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.Callback;
-
-import java.util.List;
-
-
-import com.universidadeuropea.entities.Libros;
 import repositorios.LibreriaSingleton;
 
 /**

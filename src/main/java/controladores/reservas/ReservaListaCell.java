@@ -3,18 +3,17 @@ package controladores.reservas;
  * Sample Skeleton for 'ReservaCell.fxml' Controller Class
  */
 
-import com.jfoenix.controls.JFXButton;
-import com.universidadeuropea.entities.Reserva;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import com.jfoenix.controls.JFXButton;
+import com.universidadeuropea.entities.Reserva;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-
-
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Window;

@@ -1,10 +1,5 @@
 package controladores.reservas;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXToggleButton;
-import com.universidadeuropea.entities.Usuario;
-
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -15,6 +10,13 @@ import java.util.ResourceBundle;
 
 import org.controlsfx.control.Notifications;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXToggleButton;
+import com.universidadeuropea.entities.Libros;
+import com.universidadeuropea.entities.Reserva;
+import com.universidadeuropea.entities.Usuario;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -24,18 +26,13 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-
-import com.universidadeuropea.dao.FechaUtils;
-import com.universidadeuropea.entities.Libros;
-import com.universidadeuropea.entities.Reserva;
-
 import repositorios.LibreriaSingleton;
 import repositorios.ReservaSingleton;
 import repositorios.SesionSingleton;
