@@ -103,4 +103,14 @@ public class UsuariosSingleton {
 		}
 
 	}
+	
+	public boolean validarUsuario(String username, String password) {
+		UsuarioDao usuarioDao = new UsuarioDao();
+		return usuarioDao.validarUsuario(username,password);
+	}
+	
+	public Usuario recuperarUsuarioPorUsername(String username) {
+		UsuarioDao usuarioDao = new UsuarioDao();
+		return usuarioDao.buscarPorUsername(username);
+	}
 }

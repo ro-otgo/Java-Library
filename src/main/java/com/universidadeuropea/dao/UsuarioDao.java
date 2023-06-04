@@ -8,6 +8,8 @@ import java.sql.Statement;
 import com.universidadeuropea.entities.Usuario;
 import com.universidadeuropea.idao.IUsuarioDao;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
 public class UsuarioDao extends Dao<Usuario, Long> implements IUsuarioDao {
 
 	@Override
@@ -84,5 +86,50 @@ public class UsuarioDao extends Dao<Usuario, Long> implements IUsuarioDao {
 		return objeto;
 	}
 	
+	
+	public boolean validarUsuario(String username,String password) {
+		obtenerConexionDB();
+		PreparedStatement ps;
+		
+		try {
+			ps = getConnection()
+					.prepareStatement("SELECT * from usuario where nombre_usuario=?");
+
+			ps.setString(1, username);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				rs.getInt("id_usuario");
+				String bcryptHashString = rs.getString("contrasena");
+				BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), bcryptHashString);
+				return result.verified;
+			}
+		} catch (SQLException e) {
+			errorHandler(e);
+		}
+		cerrarConexion();
+		return false;
+	}
+	
+	
+	public Usuario buscarPorUsername(String username) {
+		obtenerConexionDB();
+		PreparedStatement ps;
+		
+		try {
+			ps = getConnection()
+					.prepareStatement("SELECT * from usuario where nombre_usuario=?");
+
+			ps.setString(1, username);
+			ResultSet rs = ps.executeQuery();
+			
+			while (rs.next()) {
+				return mapear(rs);
+			}
+		} catch (SQLException e) {
+			errorHandler(e);
+		}
+		cerrarConexion();
+		return null;
+	}
 	
 }

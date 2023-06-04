@@ -10,6 +10,8 @@ import com.jfoenix.controls.JFXTextField;
 import com.universidadeuropea.entities.Bibliotecario;
 import com.universidadeuropea.entities.Usuario;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -141,7 +143,11 @@ public class CrearUsuarioController {
         	usuario.setNombre(nombre.getText());
         	usuario.setApellido1(apellidos.getText());
         	usuario.setEmail(email.getText());
-        	usuario.setContrasena(rePassword.getText());
+        	// TODO ENCRIPTAR password
+
+        	String hashed = BCrypt.withDefaults().hashToString(12, rePassword.getText().toCharArray());
+        	
+        	usuario.setContrasena(hashed);
         	usuario.setNombreUsuario(idUsuario.getText());
         	UsuariosSingleton.getRepoUsuarios().addUsuarioBD(usuario,usuarios);
         	stage.close();

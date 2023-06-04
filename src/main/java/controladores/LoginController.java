@@ -28,6 +28,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import repositorios.BibliotecariosSingleton;
 import repositorios.SesionSingleton;
+import repositorios.UsuariosSingleton;
 
 public class LoginController {
 	
@@ -138,11 +139,9 @@ public class LoginController {
     // Valida si id usuario y contrasena coinciden con un usuario
     private Usuario validarUsuario(String username, String password) {
     	System.out.println("VALIDANDO POR BBDD");
-    	for(com.universidadeuropea.entities.Usuario usuario: usuarios) {
-    		if(username.equals(usuario.getNombreUsuario()) && usuario.getContrasena().equals(password)) {
-    			System.out.println("VALIDADO POR BBDD: ENCONTRADO");
-    			return usuario;
-    		}
+    	if (UsuariosSingleton.getRepoUsuarios().validarUsuario(username,password)) {
+    		// Recuperar usuario
+    		return UsuariosSingleton.getRepoUsuarios().recuperarUsuarioPorUsername(username);
     	}
 		System.out.println("VALIDADO POR BBDD: NO ENCONTRADO");
     	return null;
