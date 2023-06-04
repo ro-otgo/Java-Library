@@ -31,7 +31,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import com.universidadeuropea.entities.Libros;
-import modelos.Reserva;
+import com.universidadeuropea.entities.Reserva;
+
+//import modelos.Reserva;
 import repositorios.LibreriaSingleton;
 import repositorios.ReservaSingleton;
 import repositorios.SesionSingleton;
@@ -123,7 +125,8 @@ public class ReservaDetalleController {
 
 	@FXML
 	void borrar(ActionEvent event) {
-		reserva.setActive(false);
+		reserva.setActiva(false);
+		ReservaSingleton.getReservaSingleton().actualizarReservaBD(reserva, Long.parseLong(idLibro.getText()));
 		isActive.setSelected(false);
 		Notifications.create()
 	        .title("Actualizacion")
@@ -132,6 +135,7 @@ public class ReservaDetalleController {
 	}
 
 	private boolean validarFechaReserva() {
+		
 		// Validar fechas
 		LocalDate finReserva = fechaFinReserva.getValue();
 		LocalDate inicioReserva = fechaInicioReserva.getValue();
@@ -159,7 +163,7 @@ public class ReservaDetalleController {
 			idLibro.setText("" + reserva.getIdLibro());
 			reservaValida = false;
 		} else {
-			if (isActive.isSelected() && !reserva.isActive()) {
+			if (isActive.isSelected() && !reserva.getActiva()) {
 				// Se esta intentando activar una reserva desactivada.
 				// Se comprueban las reserevas activas del libro (Nota: Solo deberia existir una
 				// reserva)
@@ -218,17 +222,22 @@ public class ReservaDetalleController {
 	}
 
 	private boolean validarModificacion() {
-		return validarFechaReserva() && validarReserva() &&  validarUsuario();
+		return  validarReserva() &&  validarUsuario(); // borrado validarFechaReserva() pendiente de fecha fin reserva
 	}
 	
 	private void actualizarCampos() {
-		reserva.setActive(isActive.isSelected());
-		reserva.setFechaFinReserva(fechaFinReserva.getValue());
-		reserva.setFechaInicioReserva(fechaInicioReserva.getValue());
+		reserva.setActiva(isActive.isSelected());
+		reserva.setFechaReserva(fechaInicioReserva.getValue());
+	//	reserva.setFechaFinReserva(fechaFinReserva.getValue());
 		reserva.setIdLibro(Long.parseLong(idLibro.getText()));
 		reserva.setIdUsuario(idUsuario.getText());
-		if(!reserva.isActive())
-			LibreriaSingleton.devolverLibroDB(Long.parseLong(idLibro.getText()));
+		ReservaSingleton.getReservaSingleton().actualizarReservaBD(reserva, Long.parseLong(idLibro.getText()));
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Informacion");
+		alert.setHeaderText("Actualizacion reserva");
+		alert.setContentText("Se ha actualizado la reserva.");
+		alert.showAndWait();
+
 	}
 
 	@FXML
@@ -287,12 +296,12 @@ public class ReservaDetalleController {
 	}
 
 	private void populateVista() {
-		idReserva.setText("" + reserva.getId());
+		idReserva.setText("" + reserva.getIdReserva());
 		idUsuario.setText(reserva.getIdUsuario());
 		idLibro.setText("" + reserva.getIdLibro());
-		isActive.setSelected(reserva.isActive());
-		fechaInicioReserva.setValue(reserva.getFechaInicioReserva());
-		fechaFinReserva.setValue(reserva.getFechaFinReserva());
+		isActive.setSelected(reserva.getActiva());
+		fechaInicioReserva.setValue(reserva.getFechaReserva());
+	//	fechaFinReserva.setValue(reserva.getFechaFinReserva());
 	}
 
 	public Reserva getReserva() {

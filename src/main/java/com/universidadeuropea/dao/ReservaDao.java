@@ -31,9 +31,9 @@ public class ReservaDao extends Dao<Reserva, Long> implements IReservaDao {
 		Reserva reserva = new Reserva();
 		reserva.setIdReserva(rs.getLong("id_reserva"));
 		reserva.setIdLibro(rs.getLong("id_libro"));
-		reserva.setIdUsuario(rs.getLong("id_usuario"));
+		reserva.setIdUsuario(rs.getString("id_usuario"));
 		reserva.setActiva(rs.getBoolean("activa"));
-		reserva.setFechaReserva(FechaUtils.recuperarFechaYHora(rs.getString("fecha_reserva")));
+		reserva.setFechaReserva(FechaUtils.recuperarFecha(rs.getString("fecha_reserva")));
 		return reserva;
 	}
 
@@ -49,7 +49,7 @@ public class ReservaDao extends Dao<Reserva, Long> implements IReservaDao {
 		obtenerConexionDB();
 		PreparedStatement ps =getConnection().prepareStatement("INSERT INTO reserva (id_libro, id_usuario,activa,fecha_reserva) VALUES(?,?,?,?)",  Statement.RETURN_GENERATED_KEYS);
 		ps.setLong(1, objeto.getIdLibro());
-		ps.setLong(2, objeto.getIdUsuario());
+		ps.setString(2, objeto.getIdUsuario());
 		ps.setBoolean(3, objeto.getActiva());
 		ps.setString(4, FechaUtils.convertirFecha(objeto.getFechaReserva()));
 		ps.executeUpdate();
@@ -73,7 +73,7 @@ public class ReservaDao extends Dao<Reserva, Long> implements IReservaDao {
 		obtenerConexionDB();
 		PreparedStatement ps =getConnection().prepareStatement("UPDATE reserva SET id_libro=?, id_usuario=?, activa =?, fecha_reserva=? WHERE id_reserva=?");
 		ps.setLong(1, objeto.getIdLibro());
-		ps.setLong(2, objeto.getIdUsuario());
+		ps.setString(2, objeto.getIdUsuario());
 		ps.setBoolean(3, objeto.getActiva());
 		ps.setString(4, FechaUtils.convertirFecha(objeto.getFechaReserva()));
 		ps.setLong(5, objeto.getIdReserva());
@@ -81,6 +81,5 @@ public class ReservaDao extends Dao<Reserva, Long> implements IReservaDao {
 		cerrarConexion();
 		return objeto;
 	}
-	
 	
 }

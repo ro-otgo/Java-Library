@@ -1,6 +1,7 @@
 package com.universidadeuropea.entities;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+
 
 public class Reserva {
 
@@ -8,11 +9,11 @@ public class Reserva {
 	
 	private long idLibro;
 	
-	private long idUsuario;
+	private String idUsuario;
 	
 	private boolean activa;
 	
-	private LocalDateTime fechaReserva;
+	private LocalDate fechaReserva;
 
 	public long getIdReserva() {
 		return idReserva;
@@ -30,11 +31,11 @@ public class Reserva {
 		this.idLibro = idLibro;
 	}
 
-	public long getIdUsuario() {
+	public String getIdUsuario() {
 		return idUsuario;
 	}
 
-	public void setIdUsuario(long idUsuario) {
+	public void setIdUsuario(String idUsuario) {
 		this.idUsuario = idUsuario;
 	}
 
@@ -46,11 +47,11 @@ public class Reserva {
 		this.activa = activa;
 	}
 
-	public LocalDateTime getFechaReserva() {
+	public LocalDate getFechaReserva() {
 		return fechaReserva;
 	}
 
-	public void setFechaReserva(LocalDateTime fechaReserva) {
+	public void setFechaReserva(LocalDate fechaReserva) {
 		this.fechaReserva = fechaReserva;
 	}
 

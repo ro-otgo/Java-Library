@@ -5,21 +5,25 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Type;
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
+import com.universidadeuropea.dao.ReservaDao;
+import com.universidadeuropea.dao.UsuarioDao;
 import com.universidadeuropea.entities.Libros;
+import com.universidadeuropea.entities.Reserva;
 import com.universidadeuropea.entities.Usuario;
 
 import config.AppConfiguration;
-import modelos.Reserva;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  * Repositorio para almacenar las reservas.
@@ -48,7 +52,16 @@ public class ReservaSingleton {
 	 * Metodo para cargar las reservas.
 	 * @return
 	 */
+	
 	private List<Reserva> cargarReservas() {
+		ReservaDao reservaDao = new ReservaDao();
+		List<com.universidadeuropea.entities.Reserva> reservas = new ArrayList<>();
+		try {
+			reservas = reservaDao.getAll();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		/*
 		List<Reserva> reservas = new ArrayList(); // objeto vacio donde guardar la informaci�n
 		try (Reader reader = new FileReader("reservas.json")) {
 			Gson gson = new Gson();
@@ -58,6 +71,7 @@ public class ReservaSingleton {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		*/
 		return reservas;
 	}
 
@@ -83,27 +97,45 @@ public class ReservaSingleton {
 	}
 
 	public void crearReserva(Libros libro, Usuario usuario) {
-		Reserva reserva = new Reserva(usuario.getNombreUsuario(), libro.getIdLibro(),appConfiguracion.getTiempoReserva());
-		reservas.add(reserva);
+		Reserva nuevareserva = new Reserva();
+		nuevareserva.setIdUsuario(usuario.getNombreUsuario());
+		nuevareserva.setIdLibro(libro.getIdLibro());
+		nuevareserva.setActiva(true);
+		nuevareserva.setFechaReserva(LocalDate.now());
+		
+		ReservaDao reservaDao = new ReservaDao();
+		try {
+			reservas.add(reservaDao.save(nuevareserva));
+        	Alert alert = new Alert(AlertType.INFORMATION);
+    		alert.setTitle("Informacion");
+    		alert.setHeaderText("Actualizacion reserva");
+    		alert.setContentText("Se ha realizado la reserva del libro.");
+			alert.showAndWait();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		libro.setReservado(true);
 		LibreriaSingleton.actualizarLibroDB(libro);
 	}
-
-	public void eliminarReserva(Long idReserva) {
-		ListIterator<Reserva> listIterator = reservas.listIterator();
-		while(listIterator.hasNext()) {
-			Reserva reserva = listIterator.next();
-			if(reserva.getId() == idReserva) {
-				listIterator.remove();
-				break;
-			}
+	
+	public void actualizarReservaBD (Reserva reserva, long idLibro) {
+		ReservaDao reservaDao = new ReservaDao();
+		try {
+			if(!reserva.getActiva())
+				LibreriaSingleton.devolverLibroDB(idLibro);
+			reservaDao.update(reserva);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
 	public boolean usuarioTieneReservaActivaLibro(Usuario usuario, Libros libro) {
 		List<Reserva> reservasLibrosUsuario = reservas.stream().filter(r->usuario.getNombreUsuario().equals(r.getIdUsuario()) && libro.getIdLibro() == r.getIdLibro()).collect(Collectors.toList());
 		for (Reserva reserva: reservasLibrosUsuario) {
-			if (reserva.isActive()) {
+			if (reserva.getActiva()) {
 				return true;
 			}
 		}
@@ -115,7 +147,7 @@ public class ReservaSingleton {
 	 * @return
 	 */
 	public List<Reserva> getReservasActivas(){
-		return reservas.stream().filter(Reserva::isActive).collect(Collectors.toList());
+		return reservas.stream().filter(Reserva::getActiva).collect(Collectors.toList());
 	}
 	
 	/**
@@ -124,7 +156,7 @@ public class ReservaSingleton {
 	 * @return
 	 */
 	public List<Reserva> buscarReservaActivaPorLibro(Libros libro) {
-		return reservas.stream().filter(r -> libro.getIdLibro() == r.getIdLibro() && r.isActive()).collect(Collectors.toList());
+		return reservas.stream().filter(r -> libro.getIdLibro() == r.getIdLibro() && r.getActiva()).collect(Collectors.toList());
 	}
 	
 	/**
@@ -142,7 +174,7 @@ public class ReservaSingleton {
 	 * @return
 	 */
 	public List<Reserva> buscarReservaActivaPorUsuario(Usuario usuario) {
-		return reservas.stream().filter(r -> usuario.getNombreUsuario().equals(r.getIdUsuario()) && r.isActive()).collect(Collectors.toList());
+		return reservas.stream().filter(r -> usuario.getNombreUsuario().equals(r.getIdUsuario()) && r.getActiva()).collect(Collectors.toList());
 	}
 	
 	/**
@@ -162,11 +194,11 @@ public class ReservaSingleton {
 	 * @return
 	 */
 	public Optional<Reserva> buscarReservaActivaPorUsuarioLibro(Usuario usuario, Libros libro) {
-		return reservas.stream().filter(r -> usuario.getNombreUsuario().equals(r.getIdUsuario()) && r.isActive() && libro.getIdLibro() == r.getIdLibro()).findFirst();
+		return reservas.stream().filter(r -> usuario.getNombreUsuario().equals(r.getIdUsuario()) && r.getActiva() && libro.getIdLibro() == r.getIdLibro()).findFirst();
 	}
 	
 	public boolean libroReservado(Libros libro) {
-		return reservas.stream().anyMatch(r->libro.getIdLibro()==r.getIdLibro() && r.isActive());
+		return reservas.stream().anyMatch(r->libro.getIdLibro()==r.getIdLibro() && r.getActiva());
 	}
 
 }

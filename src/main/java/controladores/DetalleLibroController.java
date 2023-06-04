@@ -7,6 +7,7 @@ package controladores;
 
 import com.jfoenix.controls.JFXButton;
 import com.universidadeuropea.entities.Libros;
+import com.universidadeuropea.entities.Reserva;
 import com.universidadeuropea.entities.Usuario;
 
 import java.io.IOException;
@@ -26,7 +27,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import modelos.Reserva;
 import repositorios.LibreriaSingleton;
 import repositorios.ReservaSingleton;
 import repositorios.SesionSingleton;
@@ -142,13 +142,14 @@ public class DetalleLibroController {
     		alert.showAndWait();
         	reservadoLabel.setText(TEXT_RESERVA_LIBRO);
     	}else {
+    		/* probar para que no se pueda devolver desde esta ventana
     		System.out.println("Comprobando reservas");
     		Optional<Reserva> reservaOpt = ReservaSingleton.getReservaSingleton().buscarReservaActivaPorUsuarioLibro(usuario,libro);
     		if (reservaOpt.isPresent()) {
     			// El usuario actual esta devolviendo el libro.
     			Reserva reserva = reservaOpt.get();
-    			reserva.setActive(false);
-    			LibreriaSingleton.devolverLibroDB(libro.getIdLibro());
+    			reserva.setActiva(false);
+    			ReservaSingleton.getReservaSingleton().actualizarReservaBD(reserva, libro.getIdLibro());
         		Alert alert = new Alert(AlertType.INFORMATION);
         		alert.setTitle("Informacion");
         		alert.setHeaderText("Actualizacion reserva");
@@ -159,6 +160,7 @@ public class DetalleLibroController {
         		reservadoLabel.setText(TEXT_DISPONIBLE);
     		}
     		else {
+    		*/
     			// El usuario actual esta intentando reservar un libro que ya lo itene otro usuario.
     			Alert alert = new Alert(AlertType.ERROR);
         		alert.setTitle("Error");
@@ -168,7 +170,7 @@ public class DetalleLibroController {
         		alert.initOwner(source.getScene().getWindow()); 
         		alert.showAndWait();
         		System.out.println("El libro ya esta reservado.");
-    		}
+    	//	}
     	}
     }
 

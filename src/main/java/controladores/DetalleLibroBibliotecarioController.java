@@ -9,6 +9,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.universidadeuropea.entities.Usuario;
 import com.universidadeuropea.entities.Libros;
+import com.universidadeuropea.entities.Reserva;
 
 import java.io.IOException;
 import java.net.URL;
@@ -35,7 +36,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import modelos.Reserva;
+
 import repositorios.LibreriaSingleton;
 import repositorios.ReservaSingleton;
 import repositorios.SesionSingleton;
@@ -158,7 +159,7 @@ public class DetalleLibroBibliotecarioController {
     	Alert confirmacionAlert = new Alert(AlertType.CONFIRMATION);
     	confirmacionAlert.setTitle("Borrar libro");
     	confirmacionAlert.setHeaderText("Se va a proceder a eliminar el libro seleccionado");
-    	confirmacionAlert.setContentText("Â¿Esta seguro de borrar el libro?");
+    	confirmacionAlert.setContentText("¿Esta seguro de borrar el libro?");
 
     	Optional<ButtonType> result = confirmacionAlert.showAndWait();
     	if (result.get() == ButtonType.OK){
@@ -235,6 +236,7 @@ public class DetalleLibroBibliotecarioController {
     		alert.initOwner(source.getScene().getWindow()); 
     		alert.showAndWait();
     	}else {
+    		/*
     		System.out.println("Comprobando reservas");
     		Optional<Reserva> reservaOpt = ReservaSingleton.getReservaSingleton().buscarReservaActivaPorUsuarioLibro(usuario,libro);
     		if (reservaOpt.isPresent()) {
@@ -242,7 +244,8 @@ public class DetalleLibroBibliotecarioController {
 //    		if (!reservas.isEmpty()) {
 //    			Reserva reserva = reservas.get(0);
     			Reserva reserva = reservaOpt.get();
-    			reserva.setActive(false);
+    			reserva.setActiva(false);
+    			//actualizar en la BD??????????????????????????????????????????????????????????????????????????????????'
         		reservadoLabel.setText(TEXT_DISPONIBLE);
         		Alert alert = new Alert(AlertType.INFORMATION);
         		alert.setTitle("Informacion");
@@ -253,6 +256,7 @@ public class DetalleLibroBibliotecarioController {
         		alert.showAndWait();
     		}
     		else {
+    		*/
     			Alert alert = new Alert(AlertType.ERROR);
         		alert.setTitle("Error");
         		alert.setHeaderText("Se ha producido un error");
@@ -261,7 +265,7 @@ public class DetalleLibroBibliotecarioController {
         		alert.initOwner(source.getScene().getWindow()); 
         		alert.showAndWait();
         		System.out.println("El libro ya esta reservado.");
-    		}
+    	//	}
     	}
     }
 
@@ -323,7 +327,7 @@ public class DetalleLibroBibliotecarioController {
 		if (libro.getReservado()) {
 			List<Reserva> reservaList = ReservaSingleton.getReservaSingleton().buscarReservaActivaPorLibro(libro);
 			Reserva reserva = reservaList.get(0);
-			reservadoLabel1.setText("" + reserva.getId());
+			reservadoLabel1.setText("" + reserva.getIdReserva());
 		}else {
 			reservadoLabel1.setText(TEXT_DISPONIBLE);
 		}
