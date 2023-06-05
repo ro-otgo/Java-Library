@@ -1,19 +1,10 @@
 package repositorios;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Reader;
-import java.lang.reflect.Type;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
 import com.universidadeuropea.dao.LibrosDao;
 import com.universidadeuropea.entities.Libros;
@@ -144,6 +135,16 @@ public class LibreriaSingleton {
 		LibrosDao librosDao = new LibrosDao();
 		try {
 			librosDao.update(libro);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void actualizarEstadoLibro (Libros libro) {
+		LibrosDao librosDao = new LibrosDao();
+		try {
+			librosDao.actualizarEstadoLibro(libro);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

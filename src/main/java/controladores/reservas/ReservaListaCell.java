@@ -3,21 +3,20 @@ package controladores.reservas;
  * Sample Skeleton for 'ReservaCell.fxml' Controller Class
  */
 
-import com.jfoenix.controls.JFXButton;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import com.jfoenix.controls.JFXButton;
+import com.universidadeuropea.entities.Reserva;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-
-
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Window;
-import modelos.Reserva;
 
 public class ReservaListaCell extends ListCell<Reserva> {
 
@@ -47,7 +46,7 @@ public class ReservaListaCell extends ListCell<Reserva> {
 	 */
 	private void updateContent() {
 		System.out.println(reserva);
-		reservaID.setText("Reserva ID: " + reserva.getId());
+		reservaID.setText("Reserva ID: " + reserva.getIdReserva());
 		usuarioID.setText("Usuario ID: " + reserva.getIdUsuario());
 		libroID.setText("Libro ID: " + reserva.getIdLibro());
 		setText(null);

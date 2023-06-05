@@ -4,11 +4,13 @@
 package controladores;
 
 
-import com.jfoenix.controls.JFXButton;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import com.jfoenix.controls.JFXButton;
+import com.universidadeuropea.entities.Libros;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +18,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Window;
-import com.universidadeuropea.entities.Libros;
 import repositorios.SesionSingleton;
 
 public class LibroListaCell extends ListCell<Libros>{

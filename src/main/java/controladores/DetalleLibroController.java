@@ -1,18 +1,20 @@
 package controladores;
 
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.Optional;
+import java.util.ResourceBundle;
+
 /**
  * Sample Skeleton for 'DetalleLibro.fxml' Controller Class
  */
 
 import com.jfoenix.controls.JFXButton;
 import com.universidadeuropea.entities.Libros;
+import com.universidadeuropea.entities.Reserva;
 import com.universidadeuropea.entities.Usuario;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.Optional;
-import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,7 +28,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import modelos.Reserva;
 import repositorios.LibreriaSingleton;
 import repositorios.ReservaSingleton;
 import repositorios.SesionSingleton;
@@ -143,11 +144,11 @@ public class DetalleLibroController {
         	reservadoLabel.setText(TEXT_RESERVA_LIBRO);
     	}else {
     		System.out.println("Comprobando reservas");
-    		Optional<Reserva> reservaOpt = ReservaSingleton.getReservaSingleton().buscarReservaActivaPorUsuarioLibro(usuario,libro);
+    		Optional<com.universidadeuropea.entities.Reserva> reservaOpt = ReservaSingleton.getReservaSingleton().buscarReservaActivaPorUsuarioLibro(usuario,libro);
     		if (reservaOpt.isPresent()) {
     			// El usuario actual esta devolviendo el libro.
     			Reserva reserva = reservaOpt.get();
-    			reserva.setActive(false);
+    			reserva.setActiva(false);
     			LibreriaSingleton.devolverLibroDB(libro.getIdLibro());
         		Alert alert = new Alert(AlertType.INFORMATION);
         		alert.setTitle("Informacion");

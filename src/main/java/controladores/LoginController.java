@@ -3,7 +3,6 @@ package controladores;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
@@ -13,7 +12,6 @@ import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
-import com.universidadeuropea.dao.BibliotecarioDao;
 import com.universidadeuropea.entities.Bibliotecario;
 import com.universidadeuropea.entities.Usuario;
 
@@ -133,7 +131,7 @@ public class LoginController {
     // Valida si id usuario y contrasena coinciden con un bibliotecario de la DB
     private boolean validarBibliotecarioDB(String username, String password) {
     	System.out.println("VALIDANDO POR BBDD-Update");
-    	return BibliotecariosSingleton.validarBibliotecario(username,password);
+    	return BibliotecariosSingleton.getRepoUsuarios().validarBibliotecario(username, password);
     }
     
     // Valida si id usuario y contrasena coinciden con un usuario

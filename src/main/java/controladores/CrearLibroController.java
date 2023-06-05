@@ -1,31 +1,28 @@
 package controladores;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
 /**
  * Sample Skeleton for 'CrearLibro.fxml' Controller Class
  */
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXToggleButton;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import org.controlsfx.control.Notifications;
+import com.universidadeuropea.entities.Libros;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import com.universidadeuropea.entities.Libros;
 import repositorios.LibreriaSingleton;
 
 public class CrearLibroController {
@@ -112,7 +109,7 @@ public class CrearLibroController {
     	}
     }
 
-    // verifica que todos los campos del formulario estén rellenos
+    // verifica que todos los campos del formulario estï¿½n rellenos
     boolean comprobarFormulario() {
     	if(autorInput.getText().isEmpty()||tituloInput.getText().isEmpty()||isbnInput.getText().isEmpty())
     		return false;

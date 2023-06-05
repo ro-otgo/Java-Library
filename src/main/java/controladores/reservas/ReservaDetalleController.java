@@ -1,18 +1,21 @@
 package controladores.reservas;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXToggleButton;
-import com.universidadeuropea.entities.Usuario;
-
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 import org.controlsfx.control.Notifications;
+
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXToggleButton;
+import com.universidadeuropea.entities.Libros;
+import com.universidadeuropea.entities.Reserva;
+import com.universidadeuropea.entities.Usuario;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -23,15 +26,13 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import com.universidadeuropea.entities.Libros;
-import modelos.Reserva;
 import repositorios.LibreriaSingleton;
 import repositorios.ReservaSingleton;
 import repositorios.SesionSingleton;
@@ -123,7 +124,7 @@ public class ReservaDetalleController {
 
 	@FXML
 	void borrar(ActionEvent event) {
-		reserva.setActive(false);
+		reserva.setActiva(false);
 		isActive.setSelected(false);
 		Notifications.create()
 	        .title("Actualizacion")
@@ -159,7 +160,7 @@ public class ReservaDetalleController {
 			idLibro.setText("" + reserva.getIdLibro());
 			reservaValida = false;
 		} else {
-			if (isActive.isSelected() && !reserva.isActive()) {
+			if (isActive.isSelected() && !reserva.getActiva()) {
 				// Se esta intentando activar una reserva desactivada.
 				// Se comprueban las reserevas activas del libro (Nota: Solo deberia existir una
 				// reserva)
@@ -212,7 +213,7 @@ public class ReservaDetalleController {
 			Scene scene = modificarButton.getScene();
 			alert.initOwner(scene.getWindow()); 
 			alert.showAndWait();
-			idUsuario.setText(reserva.getIdUsuario());
+			idUsuario.setText(String.valueOf(reserva.getIdUsuario()));
 		}
 		return resultado;
 	}
@@ -222,12 +223,13 @@ public class ReservaDetalleController {
 	}
 	
 	private void actualizarCampos() {
-		reserva.setActive(isActive.isSelected());
-		reserva.setFechaFinReserva(fechaFinReserva.getValue());
-		reserva.setFechaInicioReserva(fechaInicioReserva.getValue());
+		reserva.setActiva(isActive.isSelected());
+//		reserva.setFechaFinReserva(fechaFinReserva.getValue());
+		LocalDate fechaInicio = fechaInicioReserva.getValue();
+		reserva.setFechaReserva(LocalDateTime.from(fechaInicio));
 		reserva.setIdLibro(Long.parseLong(idLibro.getText()));
-		reserva.setIdUsuario(idUsuario.getText());
-		if(!reserva.isActive())
+		reserva.setIdUsuario(Long.parseLong(idUsuario.getText()));
+		if(!reserva.getActiva())
 			LibreriaSingleton.devolverLibroDB(Long.parseLong(idLibro.getText()));
 	}
 
@@ -287,12 +289,12 @@ public class ReservaDetalleController {
 	}
 
 	private void populateVista() {
-		idReserva.setText("" + reserva.getId());
-		idUsuario.setText(reserva.getIdUsuario());
+		idReserva.setText("" + reserva.getIdReserva());
+		idUsuario.setText("" + reserva.getIdUsuario());
 		idLibro.setText("" + reserva.getIdLibro());
-		isActive.setSelected(reserva.isActive());
-		fechaInicioReserva.setValue(reserva.getFechaInicioReserva());
-		fechaFinReserva.setValue(reserva.getFechaFinReserva());
+		isActive.setSelected(reserva.getActiva());
+		LocalDateTime fechaReserva = reserva.getFechaReserva();
+		fechaInicioReserva.setValue(fechaReserva.toLocalDate());
 	}
 
 	public Reserva getReserva() {

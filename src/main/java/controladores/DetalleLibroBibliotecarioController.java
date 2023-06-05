@@ -1,15 +1,6 @@
 package controladores;
 
 
-/**
- * Sample Skeleton for 'DetalleLibro.fxml' Controller Class
- */
-
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextField;
-import com.universidadeuropea.entities.Usuario;
-import com.universidadeuropea.entities.Libros;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -17,6 +8,16 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import org.controlsfx.control.Notifications;
+
+/**
+ * Sample Skeleton for 'DetalleLibro.fxml' Controller Class
+ */
+
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
+import com.universidadeuropea.entities.Libros;
+import com.universidadeuropea.entities.Reserva;
+import com.universidadeuropea.entities.Usuario;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -35,7 +36,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import modelos.Reserva;
 import repositorios.LibreriaSingleton;
 import repositorios.ReservaSingleton;
 import repositorios.SesionSingleton;
@@ -242,7 +242,7 @@ public class DetalleLibroBibliotecarioController {
 //    		if (!reservas.isEmpty()) {
 //    			Reserva reserva = reservas.get(0);
     			Reserva reserva = reservaOpt.get();
-    			reserva.setActive(false);
+    			reserva.setActiva(false);
         		reservadoLabel.setText(TEXT_DISPONIBLE);
         		Alert alert = new Alert(AlertType.INFORMATION);
         		alert.setTitle("Informacion");
@@ -323,7 +323,7 @@ public class DetalleLibroBibliotecarioController {
 		if (libro.getReservado()) {
 			List<Reserva> reservaList = ReservaSingleton.getReservaSingleton().buscarReservaActivaPorLibro(libro);
 			Reserva reserva = reservaList.get(0);
-			reservadoLabel1.setText("" + reserva.getId());
+			reservadoLabel1.setText("" + reserva.getIdReserva());
 		}else {
 			reservadoLabel1.setText(TEXT_DISPONIBLE);
 		}
@@ -337,7 +337,7 @@ public class DetalleLibroBibliotecarioController {
 		if (libro.getReservado()) {
 			List<Reserva> reservaList = ReservaSingleton.getReservaSingleton().buscarReservaActivaPorLibro(libro);
 			Reserva reserva = reservaList.get(0);
-			reservadoLabel.setText(reserva.getIdUsuario());
+			reservadoLabel.setText(String.valueOf(reserva.getIdUsuario()));
 		}else {
 			reservadoLabel.setText(TEXT_DISPONIBLE);
 		}
