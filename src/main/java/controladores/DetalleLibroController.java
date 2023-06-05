@@ -143,33 +143,14 @@ public class DetalleLibroController {
     		alert.showAndWait();
         	reservadoLabel.setText(TEXT_RESERVA_LIBRO);
     	}else {
-    		System.out.println("Comprobando reservas");
-    		Optional<com.universidadeuropea.entities.Reserva> reservaOpt = ReservaSingleton.getReservaSingleton().buscarReservaActivaPorUsuarioLibro(usuario,libro);
-    		if (reservaOpt.isPresent()) {
-    			// El usuario actual esta devolviendo el libro.
-    			Reserva reserva = reservaOpt.get();
-    			reserva.setActiva(false);
-    			LibreriaSingleton.devolverLibroDB(libro.getIdLibro());
-        		Alert alert = new Alert(AlertType.INFORMATION);
-        		alert.setTitle("Informacion");
-        		alert.setHeaderText("Actualizacion reserva");
-        		alert.setContentText("Se ha devuelto el libro.");
-        		Node source = (Node) event.getSource();
-        		alert.initOwner(source.getScene().getWindow()); 
-        		alert.showAndWait();
-        		reservadoLabel.setText(TEXT_DISPONIBLE);
-    		}
-    		else {
-    			// El usuario actual esta intentando reservar un libro que ya lo itene otro usuario.
-    			Alert alert = new Alert(AlertType.ERROR);
-        		alert.setTitle("Error");
-        		alert.setHeaderText("Se ha producido un error");
-        		alert.setContentText("El libro ya esta reservado.");
-        		Node source = (Node) event.getSource();
-        		alert.initOwner(source.getScene().getWindow()); 
-        		alert.showAndWait();
-        		System.out.println("El libro ya esta reservado.");
-    		}
+    		Alert alert = new Alert(AlertType.ERROR);
+        	alert.setTitle("Error");
+        	alert.setHeaderText("Se ha producido un error");
+        	alert.setContentText("El libro ya esta reservado.");
+        	Node source = (Node) event.getSource();
+       		alert.initOwner(source.getScene().getWindow()); 
+       		alert.showAndWait();
+       		System.out.println("El libro ya esta reservado.");
     	}
     }
 

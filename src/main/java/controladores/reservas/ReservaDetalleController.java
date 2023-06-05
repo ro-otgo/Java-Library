@@ -125,6 +125,7 @@ public class ReservaDetalleController {
 	@FXML
 	void borrar(ActionEvent event) {
 		reserva.setActiva(false);
+		ReservaSingleton.getReservaSingleton().actualizarReservaBD(reserva, Long.parseLong(idLibro.getText()));
 		isActive.setSelected(false);
 		Notifications.create()
 	        .title("Actualizacion")
@@ -219,29 +220,29 @@ public class ReservaDetalleController {
 	}
 
 	private boolean validarModificacion() {
-		return validarFechaReserva() && validarReserva() &&  validarUsuario();
+		return validarFechaReserva()&& validarReserva() &&  validarUsuario();
 	}
 	
 	private void actualizarCampos() {
 		reserva.setActiva(isActive.isSelected());
 //		reserva.setFechaFinReserva(fechaFinReserva.getValue());
 		LocalDate fechaInicio = fechaInicioReserva.getValue();
-		reserva.setFechaReserva(LocalDateTime.from(fechaInicio));
+		reserva.setFechaReserva(fechaInicio.atStartOfDay());
 		reserva.setIdLibro(Long.parseLong(idLibro.getText()));
 		reserva.setIdUsuario(Long.parseLong(idUsuario.getText()));
-		if(!reserva.getActiva())
-			LibreriaSingleton.devolverLibroDB(Long.parseLong(idLibro.getText()));
+		ReservaSingleton.getReservaSingleton().actualizarReservaBD(reserva, Long.parseLong(idLibro.getText()));
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Informacion");
+		alert.setHeaderText("Actualizacion reserva");
+		alert.setContentText("Se ha actualizado la reserva.");
+		alert.showAndWait();
 	}
 
 	@FXML
 	void modificar(ActionEvent event) {
 		System.out.println("Se ha pulsado modificar");
-		if (validarModificacion()) {
+		if (validarReserva()) {	
 			actualizarCampos();
-			Notifications.create()
-				.title("Actualizacion")
-				.text("Se ha actualizado la reserva")
-				.showInformation();
 			System.out.println("Actualizando reserva");
 		} else {
 			System.out.println("No se ha podido actualizar la reserva");

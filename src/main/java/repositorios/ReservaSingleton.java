@@ -64,7 +64,6 @@ public class ReservaSingleton {
 		}
 		return reservaSingleton;
 	}
-
 	
 	public void crearReserva(Libros libro, Usuario usuario) {
 		Reserva reserva = new Reserva(libro.getIdLibro(),usuario.getIdUsuario(), true, LocalDateTime.now());
@@ -79,6 +78,18 @@ public class ReservaSingleton {
 
 	}
 
+	public void actualizarReservaBD (Reserva reserva, long idLibro) {
+		ReservaDao reservaDao = new ReservaDao();
+		try {
+			if(!reserva.getActiva())
+				LibreriaSingleton.devolverLibroDB(idLibro);
+			reservaDao.update(reserva);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void eliminarReserva(Long idReserva) {
 		ReservaDao daoReserva = new ReservaDao();
 		try {
