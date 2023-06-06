@@ -90,7 +90,8 @@ public class UsuarioDao extends Dao<Usuario, Long> implements IUsuarioDao {
 	public boolean validarUsuario(String username,String password) {
 		obtenerConexionDB();
 		PreparedStatement ps;
-		BCrypt.Result result = null;
+		BCrypt.Result verify = null;
+		boolean result = false;
 		try {
 			ps = getConnection()
 					.prepareStatement("SELECT * from usuario where nombre_usuario=?");
@@ -100,15 +101,15 @@ public class UsuarioDao extends Dao<Usuario, Long> implements IUsuarioDao {
 			while (rs.next()) {
 				rs.getInt("id_usuario");
 				String bcryptHashString = rs.getString("contrasena");
-				result = BCrypt.verifyer().verify(password.toCharArray(), bcryptHashString);
-				cerrarConexion();
-				return result.verified;
+				verify = BCrypt.verifyer().verify(password.toCharArray(), bcryptHashString);
+				result = verify.verified;
+				break;
 			}
 		} catch (SQLException e) {
 			errorHandler(e);
 		}
 		cerrarConexion();
-		return false;
+		return result;
 	}
 	
 	
