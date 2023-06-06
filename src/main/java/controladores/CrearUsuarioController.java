@@ -133,14 +133,13 @@ public class CrearUsuarioController {
 			alert.showAndWait();
     	}
     	
-    	else if(validarPassword(password.getText(), rePassword.getText())){
-    		
+    	else if(validarPassword(password.getText(), rePassword.getText())){  		
         	Usuario usuario = new Usuario();
         	usuario.setNombre(nombre.getText());
         	usuario.setApellido1(apellidos.getText());
         	usuario.setEmail(email.getText());
+        	
         	// TODO ENCRIPTAR password
-
         	String hashed = BCrypt.withDefaults().hashToString(12, rePassword.getText().toCharArray());
         	
         	usuario.setContrasena(hashed);
@@ -148,16 +147,15 @@ public class CrearUsuarioController {
         	UsuariosSingleton.getRepoUsuarios().addUsuarioBD(usuario,usuarios);
         	stage.close();
     	}
+    	
     	else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.setHeaderText("Se ha producido un error");
 			alert.setContentText("La contrasena debe tener 8 caracteres");
 			alert.showAndWait();
-    	}
-    	}
-   	
-
+			}
+    	}	
 
     // Verifica que el id tenga 8 caracteres de longitud:
     private boolean longitudId(String username) {
@@ -167,7 +165,7 @@ public class CrearUsuarioController {
     		return true;
     }
     
-    // Verifica si el id de usuario existe  ----------------a lo mejor habr�a que poner el metodo en usuariossingleton
+    // Verifica si el id de usuario existe 
 	private boolean validarUsuario(String username) {
     	for(Usuario i : usuarios) {
     		if(username.equals(i.getNombreUsuario())) 
@@ -175,17 +173,6 @@ public class CrearUsuarioController {
     	}
     	return false;
     }
-	
-	// Verifica si el id del usuario existe como bibliotecarios;
-	private boolean validarBibliotecario (String username) throws Exception {
-		throw new Exception("Deprecated");
-		/*
-		if(bibliotecarios.containsKey(idUsuario.getText()))
-			return true;
-		else
-			return false;
-		*/
-	}
 	
 	// Verifica si el id del usuario existe como bibliotecarios en la base de datos;
 	private boolean validarBibliotecarioDB (String username) {
@@ -196,7 +183,7 @@ public class CrearUsuarioController {
 		return false;
 	}
 	
-	// valida que la contrase�a tenga 8 caract�res y se repita
+	// valida que la contrasena tenga 8 caracteres y se repita
 	private boolean validarPassword (String password, String rePassword) {
 		if (password.length()==8 && password.equals(rePassword))
 			return true;
@@ -207,12 +194,6 @@ public class CrearUsuarioController {
 	public void setUsuarios(List<Usuario> loadUsers) {
 		this.usuarios = loadUsers;
 	}
-	
-	/*obsoleto por paso de JSON a DB
-	public void setBibliotecarios(Map<String, String> loadbibliotecarios) {
-		this.bibliotecarios = loadbibliotecarios;
-	}
-	*/
 	
 	public void setBibliotecarios(List<Bibliotecario> loadbibliotecarios) {
 		this.bibliotecarios = loadbibliotecarios;

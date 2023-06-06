@@ -114,19 +114,6 @@ public class LoginController {
     		wrongLogIn.setText("Usuario o contrasena incorrectos!");
     	}
     }
-            
-          	
-    // Valida si id usuario y contrasena coinciden con un bibliotecario
-    private boolean validarBibliotecario(String username, String password) throws Exception {
-    	throw new Exception("Deprecated");
-    	/*
-    	String usuarioPwd = bibliotecarios.getContrasena();
-    	if (usuarioPwd!=null) {
-    		return usuarioPwd.equals(password);
-    	}
-    	return false;
-    	*/
-    }
     
     // Valida si id usuario y contrasena coinciden con un bibliotecario de la DB
     private boolean validarBibliotecarioDB(String username, String password) {

@@ -36,9 +36,7 @@ public class ReservaSingleton {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-	
-
+	}	
 
 	/**
 	 * Metodo para cargar las reservas.
