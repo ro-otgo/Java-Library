@@ -15,6 +15,7 @@ public class BibliotecarioDao extends Dao<Bibliotecario, Long> implements IBibli
 	public boolean validarUsuario(String username,String password) {
 		obtenerConexionDB();
 		PreparedStatement ps;
+		boolean result = false;
 		
 		try {
 			ps = getConnection()
@@ -25,14 +26,15 @@ public class BibliotecarioDao extends Dao<Bibliotecario, Long> implements IBibli
 			while (rs.next()) {
 				rs.getInt("id_bibliotecario");
 				String bcryptHashString = rs.getString("contrasena");
-				BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), bcryptHashString);
-				return result.verified;
+				BCrypt.Result verify = BCrypt.verifyer().verify(password.toCharArray(), bcryptHashString);
+				result = verify.verified;
+				break;
 			}
 		} catch (SQLException e) {
 			errorHandler(e);
 		}
 		cerrarConexion();
-		return false;
+		return result;
 	}
 
 	@Override
