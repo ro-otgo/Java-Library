@@ -16,8 +16,7 @@ public class AppConfiguration {
 	
 	private static final String PROPERTIES_PATH = "src/main/resources/config/app.properties";
 	private static final String TIEMPO_RESERVA_KEY = "tiempo_reserva";
-	private static final String LAST_RESERVA_KEY = "ultima_reserva";
-	private static final String LAST_LIBRO_KEY = "ultimo_libro";
+	
 	private static AppConfiguration configuration;
 
 	private int tiempoReserva = 15;

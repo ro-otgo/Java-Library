@@ -10,7 +10,7 @@ public class BibliotecariosSingleton {
 	
 	private static BibliotecariosSingleton usuariosRepo;
 	
-	private List<Bibliotecario> bibliotecarios = new ArrayList();
+	private List<Bibliotecario> bibliotecarios = new ArrayList<>();
 	
 	public boolean validarBibliotecario (String username,String password) {
 		BibliotecarioDao bibliotecarioDao = new BibliotecarioDao();
