@@ -23,13 +23,16 @@ public class BibliotecarioDao extends Dao<Bibliotecario, Long> implements IBibli
 
 			ps.setString(1, username);
 			ResultSet rs = ps.executeQuery();
+			
 			while (rs.next()) {
 				rs.getInt("id_bibliotecario");
 				String bcryptHashString = rs.getString("contrasena");
 				BCrypt.Result verify = BCrypt.verifyer().verify(password.toCharArray(), bcryptHashString);
 				result = verify.verified;
-				break;
+				break;				
 			}
+			ps.close();
+			rs.close();
 		} catch (SQLException e) {
 			errorHandler(e);
 		}
@@ -81,6 +84,8 @@ public class BibliotecarioDao extends Dao<Bibliotecario, Long> implements IBibli
 			pk = rs.getLong(1);
 		}
 		objeto.setIdBibliotecario(pk);
+		rs.close();
+		ps.close();
 		cerrarConexion();
 		return objeto;
 	}
@@ -98,6 +103,7 @@ public class BibliotecarioDao extends Dao<Bibliotecario, Long> implements IBibli
 		ps.setString(2, objeto.getContrasena());
 		ps.setLong(3, objeto.getIdBibliotecario());
 		ps.executeUpdate();
+		ps.close();
 		cerrarConexion();
 		return objeto;
 	}

@@ -60,6 +60,8 @@ public class LibrosDao extends Dao <Libros, Long> implements ILibrosDao{
 			pk = rs.getLong(1);
 		}
 		objeto.setIdLibro(pk);
+		rs.close();
+		ps.close();
 		cerrarConexion();
 		return objeto;
 	}
@@ -80,6 +82,7 @@ public class LibrosDao extends Dao <Libros, Long> implements ILibrosDao{
 		ps.setBoolean(5, objeto.getReservado());
 		ps.setLong(6, objeto.getIdLibro());
 		ps.executeUpdate();
+		ps.close();
 		cerrarConexion();
 		return objeto;
 	}
@@ -92,11 +95,11 @@ public class LibrosDao extends Dao <Libros, Long> implements ILibrosDao{
 			ps = getConnection().prepareStatement("UPDATE Libros SET reservado = 0 WHERE id_libro = ?");
 			ps.setLong(1, id);
 			ps.executeUpdate();
+			ps.close();
 		} catch (SQLException e) {
 			errorHandler(e);
 		}
 		cerrarConexion();
-
 	}
 	
 	public Libros actualizarEstadoLibro(Libros libro) throws Exception {
@@ -106,6 +109,7 @@ public class LibrosDao extends Dao <Libros, Long> implements ILibrosDao{
 		ps.setBoolean(2, libro.getReservado());
 		ps.setLong(3, libro.getIdLibro());
 		ps.executeUpdate();
+		ps.close();
 		cerrarConexion();
 		return libro;
 	}
@@ -116,6 +120,8 @@ public class LibrosDao extends Dao <Libros, Long> implements ILibrosDao{
 		ps.setLong(1, libro.getIdLibro());
 		ResultSet rs = ps.executeQuery();
 		Libros mapear = mapear(rs);
+		rs.close();
+		ps.close();
 		cerrarConexion();
 		return mapear.getReservado();
 	}

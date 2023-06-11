@@ -62,6 +62,8 @@ public class UsuarioDao extends Dao<Usuario, Long> implements IUsuarioDao {
 			pk = rs.getLong(1);
 		}
 		objeto.setIdUsuario(pk);
+		rs.close();
+		ps.close();
 		cerrarConexion();
 		return objeto;
 	}
@@ -82,6 +84,7 @@ public class UsuarioDao extends Dao<Usuario, Long> implements IUsuarioDao {
 		ps.setString(5, objeto.getEmail());
 		ps.setLong(6, objeto.getIdUsuario());
 		ps.executeUpdate();
+		ps.close();
 		cerrarConexion();
 		return objeto;
 	}
@@ -105,6 +108,8 @@ public class UsuarioDao extends Dao<Usuario, Long> implements IUsuarioDao {
 				result = verify.verified;
 				break;
 			}
+			rs.close();
+			ps.close();
 		} catch (SQLException e) {
 			errorHandler(e);
 		}
@@ -116,19 +121,18 @@ public class UsuarioDao extends Dao<Usuario, Long> implements IUsuarioDao {
 	public Usuario buscarPorUsername(String username) {
 		obtenerConexionDB();
 		PreparedStatement ps;
-		Usuario usuario = null;
-		
+		Usuario usuario = null;		
 		try {
 			ps = getConnection()
 					.prepareStatement("SELECT * from usuario where nombre_usuario=?");
-
 			ps.setString(1, username);
-			ResultSet rs = ps.executeQuery();
-			
+			ResultSet rs = ps.executeQuery();			
 			while (rs.next()) {
 				usuario = mapear(rs);
 				break;
 			}
+			rs.close();
+			ps.close();
 		} catch (SQLException e) {
 			errorHandler(e);
 		}

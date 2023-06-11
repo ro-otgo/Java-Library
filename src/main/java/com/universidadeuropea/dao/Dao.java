@@ -53,6 +53,8 @@ public abstract class Dao<T, K> implements IDao<T, K> {
 			while (rs.next()) {
 				data.add(mapear(rs));
 			}
+			rs.close();
+			st.close();
 			cerrarConexion();
 			return data;
 		} finally {
@@ -71,6 +73,8 @@ public abstract class Dao<T, K> implements IDao<T, K> {
 			while (rs.next()) {
 				data = mapear(rs);
 			}
+			rs.close();
+			ps.close();
 			return data;
 		} finally {
 			cerrarConexion();
@@ -83,8 +87,10 @@ public abstract class Dao<T, K> implements IDao<T, K> {
 			obtenerConexionDB();
 			PreparedStatement ps = connection.prepareStatement(deleteById());
 			ps.setObject(1, id);
-			boolean execute = ps.execute();
-			return execute;
+	//		boolean execute = ps.execute();
+			ps.close();
+		//	return execute;
+			return ps.execute();
 		} finally {
 			cerrarConexion();
 		}
@@ -98,6 +104,7 @@ public abstract class Dao<T, K> implements IDao<T, K> {
 
 	protected abstract String deleteById();
 
+	// constructor vacio
 	protected Dao() {
 
 	}

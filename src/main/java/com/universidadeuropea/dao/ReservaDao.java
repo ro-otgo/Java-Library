@@ -63,6 +63,8 @@ public class ReservaDao extends Dao<Reserva, Long> implements IReservaDao {
 			pk = rs.getLong(1);
 		}
 		objeto.setIdReserva(pk);
+		rs.close();
+		ps.close();
 		cerrarConexion();
 		return objeto;
 	}
@@ -82,6 +84,7 @@ public class ReservaDao extends Dao<Reserva, Long> implements IReservaDao {
 		ps.setString(4, FechaUtils.convertirFecha(objeto.getFechaReserva()));
 		ps.setLong(5, objeto.getIdReserva());
 		ps.executeUpdate();
+		ps.close();
 		cerrarConexion();
 		return objeto;
 	}
@@ -99,6 +102,8 @@ public class ReservaDao extends Dao<Reserva, Long> implements IReservaDao {
 			// Solo deberia existir una
 			break;
 		}
+		rs.close();
+		ps.close();
 		cerrarConexion();
 		Optional<Reserva> optional = Optional.ofNullable(reserva);
 		return optional;
@@ -114,6 +119,8 @@ public class ReservaDao extends Dao<Reserva, Long> implements IReservaDao {
 			Reserva reserva = mapear(rs);
 			reservas.add(reserva);
 		}
+		rs.close();
+		ps.close();
 		cerrarConexion();
 		return reservas;
 	}
@@ -128,6 +135,8 @@ public class ReservaDao extends Dao<Reserva, Long> implements IReservaDao {
 			Reserva reserva = mapear(rs);
 			reservas.add(reserva);
 		}
+		rs.close();
+		ps.close();
 		cerrarConexion();
 		return reservas;
 	}
@@ -143,6 +152,8 @@ public class ReservaDao extends Dao<Reserva, Long> implements IReservaDao {
 			reservas.add(reserva);
 			break;
 		}
+		rs.close();
+		ps.close();
 		cerrarConexion();
 		return reservas;
 	}
@@ -159,6 +170,8 @@ public class ReservaDao extends Dao<Reserva, Long> implements IReservaDao {
 			reservas.add(reserva);
 			break;
 		}
+		rs.close();
+		ps.close();
 		cerrarConexion();
 		return reservas;
 	}
@@ -173,6 +186,8 @@ public class ReservaDao extends Dao<Reserva, Long> implements IReservaDao {
 			reservas.add(reserva);
 			break;
 		}
+		rs.close();	
+		ps.close();
 		cerrarConexion();
 		return reservas;
 	}
