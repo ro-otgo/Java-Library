@@ -111,10 +111,7 @@ public class CrearLibroController {
 
     // verifica que todos los campos del formulario est�n rellenos
     boolean comprobarFormulario() {
-    	if(autorInput.getText().isEmpty()||tituloInput.getText().isEmpty()||isbnInput.getText().isEmpty())
-    		return false;
-    	else
-    		return true;
+    	return (!autorInput.getText().isEmpty() && !tituloInput.getText().isEmpty() && !isbnInput.getText().isEmpty());
     }
     
     @FXML // This method is called by the FXMLLoader when initialization is complete

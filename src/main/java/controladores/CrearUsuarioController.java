@@ -159,10 +159,13 @@ public class CrearUsuarioController {
 
     // Verifica que el id tenga 8 caracteres de longitud:
     private boolean longitudId(String username) {
+    	/*
     	if (username.length()==8)
     		return false;
     	else 
     		return true;
+    		*/
+    	return !(username.length()==8);
     }
     
     // Verifica si el id de usuario existe 
@@ -185,10 +188,13 @@ public class CrearUsuarioController {
 	
 	// valida que la contrasena tenga 8 caracteres y se repita
 	private boolean validarPassword (String password, String rePassword) {
+		/*
 		if (password.length()==8 && password.equals(rePassword))
 			return true;
 		else
 			return false;		
+			*/
+		return (password.length()==8 && password.equals(rePassword));
 	}
 	
 	public void setUsuarios(List<Usuario> loadUsers) {
@@ -211,6 +217,5 @@ public class CrearUsuarioController {
         assert rePassword != null : "fx:id=\"rePassword\" was not injected: check your FXML file 'CrearUsuario.fxml'.";
         assert crearUsuarioButton != null : "fx:id=\"crearUsuarioButton\" was not injected: check your FXML file 'CrearUsuario.fxml'.";
         assert cancelarButton != null : "fx:id=\"cancelarButton\" was not injected: check your FXML file 'CrearUsuario.fxml'.";
-
     }
 }

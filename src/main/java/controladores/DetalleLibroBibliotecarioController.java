@@ -334,10 +334,7 @@ public class DetalleLibroBibliotecarioController {
 	
     // Comprueba que no se deja ningun campo vacio
     boolean comprobarCampos() {
-    	if(autorLabel1.getText().isEmpty()||ISBNLabel1.getText().isEmpty()||tituloLabel1.getText().isEmpty())
-    		return false;
-    	else
-    		return true;
+    	return (!autorLabel1.getText().isEmpty() && !ISBNLabel1.getText().isEmpty() && !tituloLabel1.getText().isEmpty());
     }
     
 }
