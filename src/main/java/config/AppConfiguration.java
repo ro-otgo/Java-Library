@@ -24,18 +24,13 @@ public class AppConfiguration {
 	private AppConfiguration(){
 		try {
 			FileInputStream in = new FileInputStream(PROPERTIES_PATH);
-			Properties applicationProps = new Properties();
-	
+			Properties applicationProps = new Properties();	
 			applicationProps.load(in);
 			in.close();
 			tiempoReserva = Integer.valueOf(applicationProps.getProperty(TIEMPO_RESERVA_KEY));
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 	
 	public static AppConfiguration getConfiguration(){
@@ -61,13 +56,9 @@ public class AppConfiguration {
 			properties.put(TIEMPO_RESERVA_KEY, String.valueOf(tiempoReserva));
 			properties.store(out, null);
 			out.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
+		
 }

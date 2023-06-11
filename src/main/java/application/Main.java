@@ -32,10 +32,7 @@ public class Main extends Application {
 	
 	private void cargarAjustes() {
 		System.out.println("Se estan cargando los ajustes de la aplicacion.");
-		AppConfiguration configuration = AppConfiguration.getConfiguration();
-		/* obsoleto con el paso de JSON a DB
-		Libro.setGeneratedId(configuration.getLastLibro());
-		*/
+//		AppConfiguration configuration = AppConfiguration.getConfiguration();
 		System.out.println("Se han cargado los ajustes.");
 	}
 

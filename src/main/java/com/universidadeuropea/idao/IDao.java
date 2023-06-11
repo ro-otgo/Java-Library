@@ -20,7 +20,7 @@ public interface IDao<T, K> {
 	
 	T getById(K id) throws Exception;
 	
-	boolean delete(T objeto) throws Exception;;
+	boolean delete(T objeto) throws Exception;
 	
 	boolean deleteById(K id) throws Exception;
 	

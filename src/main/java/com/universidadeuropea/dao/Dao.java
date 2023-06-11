@@ -87,9 +87,7 @@ public abstract class Dao<T, K> implements IDao<T, K> {
 			obtenerConexionDB();
 			PreparedStatement ps = connection.prepareStatement(deleteById());
 			ps.setObject(1, id);
-	//		boolean execute = ps.execute();
 			ps.close();
-		//	return execute;
 			return ps.execute();
 		} finally {
 			cerrarConexion();
