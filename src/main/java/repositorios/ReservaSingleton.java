@@ -99,12 +99,6 @@ public class ReservaSingleton {
 
 	public boolean usuarioTieneReservaActivaLibro(Usuario usuario, Libros libro) {
 		Optional<Reserva> reserva = buscarReservaActivaPorUsuarioLibro(usuario,libro);
-		/*
-		if(reserva.isPresent()) {
-			return true;
-		}
-		return false;
-		*/
 		return reserva.isPresent();
 	}
 

@@ -31,8 +31,8 @@ public class BibliotecarioDao extends Dao<Bibliotecario, Long> implements IBibli
 				result = verify.verified;
 				break;				
 			}
-			ps.close();
 			rs.close();
+			ps.close();
 		} catch (SQLException e) {
 			errorHandler(e);
 		}
